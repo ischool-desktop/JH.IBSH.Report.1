@@ -1,0 +1,10 @@
+C:\Users\ChiaHu\Desktop\huangwc_desktop\dev.sh_d\實中國外成績單\bin\Debug\JH.IBSH.Report.Foreign.dll
+C:\Users\ChiaHu\Desktop\huangwc_desktop\dev.sh_d\實中國外成績單\bin\Debug\JH.IBSH.Report.Foreign.pdb
+C:\Users\ChiaHu\Desktop\huangwc_desktop\dev.sh_d\實中國外成績單\bin\Debug\CourseGradeB.dll
+C:\Users\ChiaHu\Desktop\huangwc_desktop\dev.sh_d\實中國外成績單\obj\Debug\JH.IBSH.Report.Foreign.Config.resources
+C:\Users\ChiaHu\Desktop\huangwc_desktop\dev.sh_d\實中國外成績單\obj\Debug\JH.IBSH.Report.Foreign.MainForm.resources
+C:\Users\ChiaHu\Desktop\huangwc_desktop\dev.sh_d\實中國外成績單\obj\Debug\JH.IBSH.Report.Foreign.Properties.Resources.resources
+C:\Users\ChiaHu\Desktop\huangwc_desktop\dev.sh_d\實中國外成績單\obj\Debug\實中國外成績單.csproj.GenerateResource.Cache
+C:\Users\ChiaHu\Desktop\huangwc_desktop\dev.sh_d\實中國外成績單\obj\Debug\JH.IBSH.Report.Foreign.dll
+C:\Users\ChiaHu\Desktop\huangwc_desktop\dev.sh_d\實中國外成績單\obj\Debug\JH.IBSH.Report.Foreign.pdb
+C:\Users\ChiaHu\Desktop\huangwc_desktop\dev.sh_d\實中國外成績單\bin\Debug\K12.Data.dll
