@@ -148,6 +148,8 @@ where  class.grade_year =" + Grade + " and course.school_year=" + SchoolYear + "
             {
                 if (item.Value == Min)
                     gpadpl[0].Count++;
+                else if ( item.Value == Max )
+                    gpadpl[fg-1].Count++;
                 else
                 {
                     gpadpl[int.Parse(""+Math.Ceiling((item.Value - Min) / Spacing))-1].Count++;

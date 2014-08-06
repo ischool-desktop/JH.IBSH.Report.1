@@ -66,9 +66,9 @@
             this.comboBoxEx2.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.comboBoxEx2.FormattingEnabled = true;
             this.comboBoxEx2.ItemHeight = 19;
-            this.comboBoxEx2.Location = new System.Drawing.Point(43, 8);
+            this.comboBoxEx2.Location = new System.Drawing.Point(52, 8);
             this.comboBoxEx2.Name = "comboBoxEx2";
-            this.comboBoxEx2.Size = new System.Drawing.Size(121, 25);
+            this.comboBoxEx2.Size = new System.Drawing.Size(112, 25);
             this.comboBoxEx2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.comboBoxEx2.TabIndex = 17;
             // 
@@ -84,9 +84,9 @@
             this.labelX2.Font = new System.Drawing.Font("微軟正黑體", 9.75F);
             this.labelX2.Location = new System.Drawing.Point(12, 12);
             this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(25, 21);
+            this.labelX2.Size = new System.Drawing.Size(34, 21);
             this.labelX2.TabIndex = 19;
-            this.labelX2.Text = "Gr.";
+            this.labelX2.Text = "級段";
             // 
             // MainForm
             // 

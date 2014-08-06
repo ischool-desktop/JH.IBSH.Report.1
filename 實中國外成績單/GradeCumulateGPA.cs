@@ -56,7 +56,8 @@ where class.grade_year =" + Grade + " and sems_subj_score.school_year=" + School
                     validCount++;
                 }
             }
-            AvgGPA = TotalGPA / validCount;
+            if ( validCount > 0 )
+                AvgGPA = TotalGPA / validCount;
             dgcgpar[key] = new GradeCumulateGPARecord(SchoolYear, Semester, Grade,MaxGPA,AvgGPA);
             return dgcgpar[key];
         }

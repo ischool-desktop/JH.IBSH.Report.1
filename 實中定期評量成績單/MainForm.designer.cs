@@ -36,6 +36,8 @@
             this.labelX3 = new DevComponents.DotNetBar.LabelX();
             this.labelX4 = new DevComponents.DotNetBar.LabelX();
             this.comboBoxEx4 = new DevComponents.DotNetBar.Controls.ComboBoxEx();
+            this.labelX1 = new DevComponents.DotNetBar.LabelX();
+            this.comboBoxEx1 = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.SuspendLayout();
             // 
             // linkLabel1
@@ -43,7 +45,7 @@
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.BackColor = System.Drawing.Color.Transparent;
             this.linkLabel1.Font = new System.Drawing.Font("微軟正黑體", 9.75F);
-            this.linkLabel1.Location = new System.Drawing.Point(12, 106);
+            this.linkLabel1.Location = new System.Drawing.Point(12, 144);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(60, 17);
             this.linkLabel1.TabIndex = 10;
@@ -57,7 +59,7 @@
             this.btnPrint.BackColor = System.Drawing.Color.Transparent;
             this.btnPrint.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnPrint.Font = new System.Drawing.Font("微軟正黑體", 9.75F);
-            this.btnPrint.Location = new System.Drawing.Point(105, 106);
+            this.btnPrint.Location = new System.Drawing.Point(105, 144);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(75, 23);
             this.btnPrint.TabIndex = 7;
@@ -68,6 +70,7 @@
             // 
             this.comboBoxEx2.DisplayMember = "Text";
             this.comboBoxEx2.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboBoxEx2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxEx2.FormattingEnabled = true;
             this.comboBoxEx2.ItemHeight = 19;
             this.comboBoxEx2.Location = new System.Drawing.Point(105, 7);
@@ -80,6 +83,7 @@
             // 
             this.comboBoxEx3.DisplayMember = "Text";
             this.comboBoxEx3.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboBoxEx3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxEx3.FormattingEnabled = true;
             this.comboBoxEx3.ItemHeight = 19;
             this.comboBoxEx3.Location = new System.Drawing.Point(105, 38);
@@ -132,14 +136,15 @@
             this.labelX4.Font = new System.Drawing.Font("微軟正黑體", 9.75F);
             this.labelX4.Location = new System.Drawing.Point(12, 73);
             this.labelX4.Name = "labelX4";
-            this.labelX4.Size = new System.Drawing.Size(34, 21);
+            this.labelX4.Size = new System.Drawing.Size(48, 21);
             this.labelX4.TabIndex = 22;
-            this.labelX4.Text = "學段";
+            this.labelX4.Text = "period";
             // 
             // comboBoxEx4
             // 
             this.comboBoxEx4.DisplayMember = "Text";
             this.comboBoxEx4.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboBoxEx4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxEx4.FormattingEnabled = true;
             this.comboBoxEx4.ItemHeight = 19;
             this.comboBoxEx4.Location = new System.Drawing.Point(105, 69);
@@ -148,11 +153,42 @@
             this.comboBoxEx4.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.comboBoxEx4.TabIndex = 21;
             // 
+            // labelX1
+            // 
+            this.labelX1.AutoSize = true;
+            this.labelX1.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX1.BackgroundStyle.Class = "";
+            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX1.Font = new System.Drawing.Font("微軟正黑體", 9.75F);
+            this.labelX1.Location = new System.Drawing.Point(12, 104);
+            this.labelX1.Name = "labelX1";
+            this.labelX1.Size = new System.Drawing.Size(34, 21);
+            this.labelX1.TabIndex = 24;
+            this.labelX1.Text = "級段";
+            // 
+            // comboBoxEx1
+            // 
+            this.comboBoxEx1.DisplayMember = "Text";
+            this.comboBoxEx1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboBoxEx1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxEx1.FormattingEnabled = true;
+            this.comboBoxEx1.ItemHeight = 19;
+            this.comboBoxEx1.Location = new System.Drawing.Point(105, 100);
+            this.comboBoxEx1.Name = "comboBoxEx1";
+            this.comboBoxEx1.Size = new System.Drawing.Size(75, 25);
+            this.comboBoxEx1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.comboBoxEx1.TabIndex = 23;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(192, 142);
+            this.ClientSize = new System.Drawing.Size(192, 180);
+            this.Controls.Add(this.labelX1);
+            this.Controls.Add(this.comboBoxEx1);
             this.Controls.Add(this.labelX4);
             this.Controls.Add(this.comboBoxEx4);
             this.Controls.Add(this.labelX3);
@@ -179,5 +215,7 @@
         private DevComponents.DotNetBar.LabelX labelX3;
         private DevComponents.DotNetBar.LabelX labelX4;
         private DevComponents.DotNetBar.Controls.ComboBoxEx comboBoxEx4;
+        private DevComponents.DotNetBar.LabelX labelX1;
+        private DevComponents.DotNetBar.Controls.ComboBoxEx comboBoxEx1;
     }
 }
