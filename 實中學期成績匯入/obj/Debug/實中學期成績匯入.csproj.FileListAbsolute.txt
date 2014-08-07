@@ -1,0 +1,7 @@
+C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中學期成績匯入\bin\Debug\JH.IBSH.Import.SemesterScore.dll
+C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中學期成績匯入\bin\Debug\JH.IBSH.Import.SemesterScore.pdb
+C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中學期成績匯入\obj\Debug\實中學期成績匯入.csprojResolveAssemblyReference.cache
+C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中學期成績匯入\obj\Debug\JH.IBSH.Import.SemesterScore.Properties.Resources.resources
+C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中學期成績匯入\obj\Debug\實中學期成績匯入.csproj.GenerateResource.Cache
+C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中學期成績匯入\obj\Debug\JH.IBSH.Import.SemesterScore.dll
+C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中學期成績匯入\obj\Debug\JH.IBSH.Import.SemesterScore.pdb

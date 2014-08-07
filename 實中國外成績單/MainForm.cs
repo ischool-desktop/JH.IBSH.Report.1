@@ -145,8 +145,10 @@ namespace JH.IBSH.Report.Foreign
             });
             int domainCount;
             Dictionary<string, object> mailmerge = new Dictionary<string, object>();
+            
             foreach (KeyValuePair<string,SemesterHistoryRecord> row in dshr )
             {//學生
+                grade lastGrade = null;
                 mailmerge.Clear();
                 domainCount = 1;
                 foreach (CourseGradeB.Tool.Domain domain in cgbdl)
@@ -215,6 +217,7 @@ namespace JH.IBSH.Report.Foreign
                 }
                 mailmerge.Add("GPA", "");
                 int gradeCount = 1;
+                
                 foreach (string gy in gys)
                 {//級別_
                     //群 , 科目 , 分數
@@ -250,10 +253,12 @@ namespace JH.IBSH.Report.Foreign
                                 dcl[ss.Value.Domain][ss.Value.Subject].sems2_score = ss.Value.Score.HasValue ? ss.Value.Score.Value : 0;
                             }
                         }
+                        //使用學期歷程最後一筆的學年度學期
                         if (g.sems1 != null)
                             mailmerge["GPA"] = g.sems1.CumulateGPA;
                         if (g.sems2 != null)
                             mailmerge["GPA"] = g.sems2.CumulateGPA;
+                        lastGrade = g;
                     }
                     domainCount = 1;
                     foreach (CourseGradeB.Tool.Domain domain in cgbdl)
@@ -294,12 +299,27 @@ namespace JH.IBSH.Report.Foreign
                 }   
 
                 GradeCumulateGPARecord gcgpar;
-                if (sr.Class.GradeYear.HasValue)
+                mailmerge.Add("級最高GPA", "");
+                mailmerge.Add("級平均GPA", "");
+                if (lastGrade != null && sr.Class != null)
                 {
-                    gcgpar = GradeCumulateGPA.GetGradeCumulateGPARecord(int.Parse(School.DefaultSchoolYear), int.Parse(School.DefaultSemester), sr.Class.GradeYear.Value);
-
-                    mailmerge.Add("級最高GPA", decimal.Round(gcgpar.MaxGPA, 2, MidpointRounding.AwayFromZero));
-                    mailmerge.Add("級平均GPA", decimal.Round(gcgpar.AvgGPA, 2, MidpointRounding.AwayFromZero));
+                    SchoolYearSemester sys = new SchoolYearSemester();
+                    if (lastGrade.sems1 != null)
+                    {
+                        sys.SchoolYear = lastGrade.sems1.SchoolYear;
+                        sys.Semester = lastGrade.sems1.Semester;
+                    }
+                    if (lastGrade.sems2 != null)
+                    {
+                        sys.SchoolYear = lastGrade.sems2.SchoolYear;
+                        sys.Semester = lastGrade.sems2.Semester;
+                    }
+                    if (sys.SchoolYear != 0 && sys.Semester != 0)
+                    {
+                        gcgpar = GradeCumulateGPA.GetGradeCumulateGPARecord(sys.SchoolYear, sys.Semester, sr.Class.GradeYear.Value);
+                        mailmerge["級最高GPA"] = decimal.Round(gcgpar.MaxGPA, 2, MidpointRounding.AwayFromZero);
+                        mailmerge["級平均GPA"] = decimal.Round(gcgpar.AvgGPA, 2, MidpointRounding.AwayFromZero);
+                    }
                 }
                  #endregion
                 System.IO.Stream docStream = new System.IO.MemoryStream(template);
