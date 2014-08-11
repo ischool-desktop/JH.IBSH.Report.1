@@ -1,0 +1,9 @@
+C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中學期成績匯入_含領域\bin\Debug\JH.IBSH.Import.SemesterScore2.dll
+C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中學期成績匯入_含領域\bin\Debug\JH.IBSH.Import.SemesterScore2.pdb
+C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中學期成績匯入_含領域\obj\Debug\實中學期成績匯入_含領域.Properties.Resources.resources
+C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中學期成績匯入_含領域\obj\Debug\實中學期成績匯入_含領域.csproj.GenerateResource.Cache
+C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中學期成績匯入_含領域\obj\Debug\JH.IBSH.Import.SemesterScore2.dll
+C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中學期成績匯入_含領域\obj\Debug\JH.IBSH.Import.SemesterScore2.pdb
+C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中學期成績匯入_含領域\bin\Debug\FISCA.UDT.dll
+C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中學期成績匯入_含領域\bin\Debug\FISCA.UDT.xml
+C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中學期成績匯入_含領域\obj\Debug\實中學期成績匯入_含領域.csprojResolveAssemblyReference.cache
