@@ -171,13 +171,16 @@ where sc_attend.ref_student_id in (" +string.Join("," ,sids) + ") and course.sch
             {
                 mailmerge.Clear();
 
-                mailmerge.Add("學年", SchoolYear);
+               // mailmerge.Add("學年", SchoolYear);
+                mailmerge.Add("學年", (SchoolYear + 1911) + "-" + (SchoolYear + 1912));
                 mailmerge.Add("學期", Semester);
                 mailmerge.Add("學段", ExamText);
                 mailmerge.Add("班級", sr.Class != null ? sr.Class.Name : "");
                 mailmerge.Add("級別", "");
                 if (sr.Class != null)
                     mailmerge["級別"] = sr.Class.GradeYear;
+                mailmerge.Add("學生系統編號", sr.ID);
+                mailmerge.Add("學號", sr.StudentNumber);
                 mailmerge.Add("座號", sr.SeatNo);
                 mailmerge.Add("姓名", sr.Name);
                 mailmerge.Add("英文名", sr.EnglishName);

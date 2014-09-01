@@ -30,36 +30,20 @@ namespace JH.IBSH.Report.Foreign
         private static Dictionary<string, GradeCumulateGPARecord> dgcgpar = new Dictionary<string, GradeCumulateGPARecord>();
         public static GradeCumulateGPARecord GetGradeCumulateGPARecord(int SchoolYear, int Semester, int Grade)
         {
-            //logic : 同class.grade_year 且 學期成績為當學年度學期 之 學期成績資料
-            string key = SchoolYear + "#" + Semester + "#" + Grade ;
+            string key = SchoolYear + "#" + Semester + "#" + Grade;
             if (dgcgpar.ContainsKey(key))
             {
                 return dgcgpar[key];
             }
-            DataTable dt = tool._Q.Select(@"select xpath_string( '<root>'||score_info||'</root>','/root/CumulateGPA') as CumulateGPA,
-student.id
-from class
-join student  on class.id=student.ref_class_id
-join sems_subj_score on student.id=sems_subj_score.ref_student_id
-where class.grade_year =" + Grade + " and sems_subj_score.school_year=" + SchoolYear + " and sems_subj_score.semester=" + Semester);
-            decimal MaxGPA = 0,AvgGPA=0 ,TotalGPA =0;
-            int validCount = 0 ;
-            foreach (DataRow row in dt.Rows)
+            DataTable dt = tool._Q.Select(@"select * from $ischool.gparef where grade =" + Grade + " and school_year=" + SchoolYear + " and semester=" + Semester);
+            decimal MaxGPA, AvgGPA;
+            if (dt.Rows.Count > 0 && decimal.TryParse("" + dt.Rows[0]["max"], out MaxGPA) && decimal.TryParse("" + dt.Rows[0]["avg"], out AvgGPA))
             {
-                //row["id"]
-                decimal CumulateGPA ;
-                if ( decimal.TryParse(""+row["CumulateGPA"],out CumulateGPA))
-                {
-                    if ( MaxGPA < CumulateGPA )
-                        MaxGPA = CumulateGPA ;
-                    TotalGPA += CumulateGPA ;
-                    validCount++;
-                }
+                dgcgpar[key] = new GradeCumulateGPARecord(SchoolYear, Semester, Grade, MaxGPA, AvgGPA);
+                return dgcgpar[key];
             }
-            if ( validCount > 0 )
-                AvgGPA = TotalGPA / validCount;
-            dgcgpar[key] = new GradeCumulateGPARecord(SchoolYear, Semester, Grade,MaxGPA,AvgGPA);
-            return dgcgpar[key];
+            else
+                return null;
         }
     }
 }

@@ -35,9 +35,6 @@
     <Field Required="True" Name="成績">
       <Validate AutoCorrect="False" Description="「成績」必須大於零，必須為數字，或僅限小數後兩位數。" ErrorType="Error" Validator="數字僅限小數後兩位數" When="" />
     </Field>
-    <Field Required="True" Name="GPA">
-      <Validate AutoCorrect="False" Description="「GPA」必須大於零，必須為數字，或僅限小數後兩位數。" ErrorType="Error" Validator="數字僅限小數後兩位數" When="" />
-    </Field>
     <Field Required="True" Name="節數">
       <Validate AutoCorrect="False" Description="「節數」必須大於零，必須為數字，或僅限小數後五位數。" ErrorType="Error" Validator="數字僅限小數後五位數" When="" />
     </Field>

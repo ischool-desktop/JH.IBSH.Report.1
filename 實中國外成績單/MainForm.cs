@@ -37,6 +37,7 @@ namespace JH.IBSH.Report.Foreign
         {
             public int grade_year;
             public int school_year;
+            public int semester;
             public SemesterScoreRecord sems1; // 1st semester 
             public SemesterScoreRecord sems2;// 2nd semester
         }
@@ -159,6 +160,8 @@ namespace JH.IBSH.Report.Foreign
                 }
                 #region 學生資料
                 StudentRecord sr = dsr[row.Key];
+                mailmerge.Add("學生系統編號", sr.ID);
+                mailmerge.Add("學號", sr.StudentNumber);
                 mailmerge.Add("姓名", sr.Name);
                 mailmerge.Add("英文名", sr.EnglishName);
                 string gender ;
@@ -209,10 +212,18 @@ namespace JH.IBSH.Report.Foreign
                             school_year = shi.SchoolYear
                         });
                     }
-                    if (shi.Semester == 1 && dssr.ContainsKey(key))
-                        dgrade[_gradeYear].sems1 = dssr[key];
-                    else if (shi.Semester == 2 && dssr.ContainsKey(key))
-                        dgrade[_gradeYear].sems2 = dssr[key];
+                    if (shi.Semester == 1 )
+                    {
+                        dgrade[_gradeYear].semester = 1;
+                        if ( dssr.ContainsKey(key))
+                            dgrade[_gradeYear].sems1 = dssr[key];
+                    }
+                    else if (shi.Semester == 2)
+                    {
+                        dgrade[_gradeYear].semester = 2;
+                        if (dssr.ContainsKey(key))
+                            dgrade[_gradeYear].sems2 = dssr[key];
+                    }
 
                 }
                 mailmerge.Add("GPA", "");
@@ -303,22 +314,14 @@ namespace JH.IBSH.Report.Foreign
                 mailmerge.Add("級平均GPA", "");
                 if (lastGrade != null && sr.Class != null)
                 {
-                    SchoolYearSemester sys = new SchoolYearSemester();
-                    if (lastGrade.sems1 != null)
+                    if (lastGrade.semester != null)
                     {
-                        sys.SchoolYear = lastGrade.sems1.SchoolYear;
-                        sys.Semester = lastGrade.sems1.Semester;
-                    }
-                    if (lastGrade.sems2 != null)
-                    {
-                        sys.SchoolYear = lastGrade.sems2.SchoolYear;
-                        sys.Semester = lastGrade.sems2.Semester;
-                    }
-                    if (sys.SchoolYear != 0 && sys.Semester != 0)
-                    {
-                        gcgpar = GradeCumulateGPA.GetGradeCumulateGPARecord(sys.SchoolYear, sys.Semester, sr.Class.GradeYear.Value);
-                        mailmerge["級最高GPA"] = decimal.Round(gcgpar.MaxGPA, 2, MidpointRounding.AwayFromZero);
-                        mailmerge["級平均GPA"] = decimal.Round(gcgpar.AvgGPA, 2, MidpointRounding.AwayFromZero);
+                        gcgpar = GradeCumulateGPA.GetGradeCumulateGPARecord(lastGrade.school_year, lastGrade.semester, lastGrade.grade_year);
+                        if ( gcgpar != null )
+                        { 
+                            mailmerge["級最高GPA"] = decimal.Round(gcgpar.MaxGPA, 2, MidpointRounding.AwayFromZero);
+                            mailmerge["級平均GPA"] = decimal.Round(gcgpar.AvgGPA, 2, MidpointRounding.AwayFromZero);
+                        }
                     }
                 }
                  #endregion

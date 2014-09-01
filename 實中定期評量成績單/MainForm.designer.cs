@@ -59,7 +59,7 @@
             this.btnPrint.BackColor = System.Drawing.Color.Transparent;
             this.btnPrint.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
             this.btnPrint.Font = new System.Drawing.Font("微軟正黑體", 9.75F);
-            this.btnPrint.Location = new System.Drawing.Point(105, 144);
+            this.btnPrint.Location = new System.Drawing.Point(142, 144);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(75, 23);
             this.btnPrint.TabIndex = 7;
@@ -75,7 +75,7 @@
             this.comboBoxEx2.ItemHeight = 19;
             this.comboBoxEx2.Location = new System.Drawing.Point(105, 7);
             this.comboBoxEx2.Name = "comboBoxEx2";
-            this.comboBoxEx2.Size = new System.Drawing.Size(75, 25);
+            this.comboBoxEx2.Size = new System.Drawing.Size(112, 25);
             this.comboBoxEx2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.comboBoxEx2.TabIndex = 17;
             // 
@@ -88,7 +88,7 @@
             this.comboBoxEx3.ItemHeight = 19;
             this.comboBoxEx3.Location = new System.Drawing.Point(105, 38);
             this.comboBoxEx3.Name = "comboBoxEx3";
-            this.comboBoxEx3.Size = new System.Drawing.Size(75, 25);
+            this.comboBoxEx3.Size = new System.Drawing.Size(112, 25);
             this.comboBoxEx3.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.comboBoxEx3.TabIndex = 18;
             // 
@@ -149,7 +149,7 @@
             this.comboBoxEx4.ItemHeight = 19;
             this.comboBoxEx4.Location = new System.Drawing.Point(105, 69);
             this.comboBoxEx4.Name = "comboBoxEx4";
-            this.comboBoxEx4.Size = new System.Drawing.Size(75, 25);
+            this.comboBoxEx4.Size = new System.Drawing.Size(112, 25);
             this.comboBoxEx4.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.comboBoxEx4.TabIndex = 21;
             // 
@@ -178,7 +178,7 @@
             this.comboBoxEx1.ItemHeight = 19;
             this.comboBoxEx1.Location = new System.Drawing.Point(105, 100);
             this.comboBoxEx1.Name = "comboBoxEx1";
-            this.comboBoxEx1.Size = new System.Drawing.Size(75, 25);
+            this.comboBoxEx1.Size = new System.Drawing.Size(112, 25);
             this.comboBoxEx1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.comboBoxEx1.TabIndex = 23;
             // 
@@ -186,7 +186,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(192, 180);
+            this.ClientSize = new System.Drawing.Size(229, 180);
             this.Controls.Add(this.labelX1);
             this.Controls.Add(this.comboBoxEx1);
             this.Controls.Add(this.labelX4);

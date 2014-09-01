@@ -131,7 +131,7 @@ namespace 實中學期成績匯入_含領域
                     //update semester score
                     if (dssrInsert.Count > 0)
                     {
-                        List<SemesterScoreRecord>[] tmp = tool.Partition2(dssrInsert.Values.ToList<SemesterScoreRecord>(), 2000);
+                        List<SemesterScoreRecord>[] tmp = tool.Partition2(dssrInsert.Values.ToList<SemesterScoreRecord>(), 200);
                         foreach (List<SemesterScoreRecord> t in tmp)
                         {
                             K12.Data.SemesterScore.Insert(t);
