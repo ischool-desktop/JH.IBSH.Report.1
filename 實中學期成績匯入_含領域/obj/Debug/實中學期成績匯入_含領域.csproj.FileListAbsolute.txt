@@ -6,3 +6,12 @@ C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中學期成績匯入_含領�
 C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中學期成績匯入_含領域\obj\Debug\JH.IBSH.Import.SemesterScore2.pdb
 C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中學期成績匯入_含領域\bin\Debug\FISCA.UDT.dll
 C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中學期成績匯入_含領域\bin\Debug\FISCA.UDT.xml
+D:\GitHub2\JH.IBSH.Report.1\實中學期成績匯入_含領域\bin\Debug\JH.IBSH.Import.SemesterScore2.dll
+D:\GitHub2\JH.IBSH.Report.1\實中學期成績匯入_含領域\bin\Debug\JH.IBSH.Import.SemesterScore2.pdb
+D:\GitHub2\JH.IBSH.Report.1\實中學期成績匯入_含領域\bin\Debug\FISCA.UDT.dll
+D:\GitHub2\JH.IBSH.Report.1\實中學期成績匯入_含領域\bin\Debug\FISCA.UDT.xml
+D:\GitHub2\JH.IBSH.Report.1\實中學期成績匯入_含領域\obj\Debug\實中學期成績匯入_含領域.csprojResolveAssemblyReference.cache
+D:\GitHub2\JH.IBSH.Report.1\實中學期成績匯入_含領域\obj\Debug\實中學期成績匯入_含領域.Properties.Resources.resources
+D:\GitHub2\JH.IBSH.Report.1\實中學期成績匯入_含領域\obj\Debug\實中學期成績匯入_含領域.csproj.GenerateResource.Cache
+D:\GitHub2\JH.IBSH.Report.1\實中學期成績匯入_含領域\obj\Debug\JH.IBSH.Import.SemesterScore2.dll
+D:\GitHub2\JH.IBSH.Report.1\實中學期成績匯入_含領域\obj\Debug\JH.IBSH.Import.SemesterScore2.pdb

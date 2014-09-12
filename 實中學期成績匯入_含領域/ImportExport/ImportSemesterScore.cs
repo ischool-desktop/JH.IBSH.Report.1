@@ -8,6 +8,7 @@ using K12.Data;
 using Campus.DocumentValidator;
 using System.Data;
 using System.Xml.Linq;
+using System.Globalization;
 
 namespace 實中學期成績匯入_含領域
 {
@@ -47,6 +48,8 @@ namespace 實中學期成績匯入_含領域
         /// </summary>
         public override string Import(List<Campus.DocumentValidator.IRowStream> Rows)
         {
+            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+
             Dictionary<string, string> dsn = new Dictionary<string, string>();
             //取得學生學號對比系統編號
             if (useImportKey == ImportKey.StudentNumber)
@@ -90,7 +93,7 @@ namespace 實中學期成績匯入_含領域
                      Score = decimal.Parse(each.GetValue("成績")),
                      Comment = "",
                      Domain = each.GetValue("領域"),
-                     Type = each.GetValue("Type"),
+                     Type = textInfo.ToTitleCase(each.GetValue("Type")),
                      Text = "",
                      Effort = null
                  };
