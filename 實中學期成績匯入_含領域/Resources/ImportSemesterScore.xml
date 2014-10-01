@@ -77,6 +77,8 @@
     <FieldValidator Name="列舉RegularHonor" Type="Enumeration">
       <Item Value="Regular"/>
       <Item Value="Honor"/>
+      <Item Value="regular"/>
+      <Item Value="honor"/>
     </FieldValidator>
     <FieldValidator Name="學期列舉" Type="Enumeration">
       <Item Value="1"/>
