@@ -96,6 +96,11 @@
       <HintPath>Library\K12.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="K12.EduAdminDataMapping, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\github\Library\K12.EduAdminDataMapping.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="K12.Presentation, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Library\K12.Presentation.dll</HintPath>
@@ -167,6 +172,7 @@
     <None Include="Resources\12樣版.doc" />
     <None Include="Resources\6樣版.doc" />
     <None Include="Resources\8樣版.doc" />
+    <None Include="Resources\9~12 grade樣板.doc" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

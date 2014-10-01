@@ -14,6 +14,7 @@ using Aspose.Words.Drawing;
 using Campus.Report;
 using JHSchool.Data;
 using K12.Data;
+using Aspose.Words.Tables;
 //using Campus.ePaper;
 
 namespace JH.IBSH.Report.Foreign
@@ -134,7 +135,7 @@ namespace JH.IBSH.Report.Foreign
                     domainDicKey = 12;
                     template = (ReportConfiguration9_12.Template != null) //單頁範本
                  ? ReportConfiguration9_12.Template.ToBinary()
-                 : new Campus.Report.ReportTemplate(Properties.Resources._12樣版, Campus.Report.TemplateType.Word).ToBinary();
+                 : new Campus.Report.ReportTemplate(Properties.Resources._9_12_grade樣板, Campus.Report.TemplateType.Word).ToBinary();
                     break;
                 default:
                     return;
@@ -145,6 +146,7 @@ namespace JH.IBSH.Report.Foreign
                 return x.DisplayOrder.CompareTo(y.DisplayOrder);
             });
             int domainCount;
+            Dictionary<string,string> NationalityMapping = K12.EduAdminDataMapping.Utility.GetNationalityMappingDict();
             Dictionary<string, object> mailmerge = new Dictionary<string, object>();
             
             foreach (KeyValuePair<string,SemesterHistoryRecord> row in dshr )
@@ -178,7 +180,11 @@ namespace JH.IBSH.Report.Foreign
                         break;
                 }
                 mailmerge.Add("性別", gender);
+                
                 mailmerge.Add("國籍", sr.Nationality);
+                if (NationalityMapping.ContainsKey(sr.Nationality))
+                    mailmerge["國籍"] = NationalityMapping[sr.Nationality];
+
                 mailmerge.Add("生日", sr.Birthday.HasValue?sr.Birthday.Value.ToString("d-MMMM-yyyy", new System.Globalization.CultureInfo("en-US")):"");
                 string esy = "", edog = "";
                 if (desy.ContainsKey(row.Key) && desy[row.Key] != 0)
@@ -274,35 +280,32 @@ namespace JH.IBSH.Report.Foreign
                     domainCount = 1;
                     foreach (CourseGradeB.Tool.Domain domain in cgbdl)
                     {//群
-                        if (!dcl.ContainsKey(domain.Name))
-                        {
-                            mailmerge.Add(string.Format("群{0}_級{1}_學期1_科目{2}", domainCount, gradeCount, 1), new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = "" });
-                            mailmerge.Add(string.Format("群{0}_級{1}_學期2_科目{2}", domainCount, gradeCount, 1), new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = "" });
-                            mailmerge.Add(string.Format("群{0}_級{1}_學期1_科目成績{2}", domainCount, gradeCount, 1), "N/A");
-                            mailmerge.Add(string.Format("群{0}_級{1}_學期2_科目成績{2}", domainCount, gradeCount, 1), "N/A");
-                            mailmerge.Add(string.Format("群{0}_級{1}_學期1_科目{2}", domainCount, gradeCount, 2), new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = "" });
-                            mailmerge.Add(string.Format("群{0}_級{1}_學期2_科目{2}", domainCount, gradeCount, 2), new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = "" });
-                            mailmerge.Add(string.Format("群{0}_級{1}_學期1_科目成績{2}", domainCount, gradeCount, 2), "N/A");
-                            mailmerge.Add(string.Format("群{0}_級{1}_學期2_科目成績{2}", domainCount, gradeCount, 2), "N/A");
-                            domainCount++;
-                            continue;
-                        }
                         int courseCount = 1;
-                        foreach (course item in dcl[domain.Name].Values)
+                        if (dcl.ContainsKey(domain.Name))
                         {
-                            mailmerge.Add(string.Format("群{0}_級{1}_學期1_科目{2}", domainCount, gradeCount, courseCount), item.sems1_title);
-                            mailmerge.Add(string.Format("群{0}_級{1}_學期2_科目{2}", domainCount, gradeCount, courseCount), item.sems2_title);
-                            //都存在且相同才需要合併
-                            if (item.sems1_title != null && item.sems2_title != null && item.sems1_title == item.sems2_title)
+                            foreach (course item in dcl[domain.Name].Values)
                             {
-                                mailmerge[string.Format("群{0}_級{1}_學期1_科目{2}", domainCount, gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = item.sems1_title };
-                                mailmerge[string.Format("群{0}_級{1}_學期2_科目{2}", domainCount, gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = item.sems2_title };
+                                mailmerge.Add(string.Format("群{0}_級{1}_學期1_科目{2}", domainCount, gradeCount, courseCount), item.sems1_title);
+                                mailmerge.Add(string.Format("群{0}_級{1}_學期2_科目{2}", domainCount, gradeCount, courseCount), item.sems2_title);
+                                //都存在且相同才需要合併
+                                if (item.sems1_title != null && item.sems2_title != null && item.sems1_title == item.sems2_title)
+                                {
+                                    mailmerge[string.Format("群{0}_級{1}_學期1_科目{2}", domainCount, gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = item.sems1_title };
+                                    mailmerge[string.Format("群{0}_級{1}_學期2_科目{2}", domainCount, gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = item.sems2_title };
+                                }
+                                mailmerge.Add(string.Format("群{0}_級{1}_學期1_科目成績{2}", domainCount, gradeCount, courseCount),
+                                    item.sems1_title != null ? "" + item.sems1_score : "N/A");
+                                mailmerge.Add(string.Format("群{0}_級{1}_學期2_科目成績{2}", domainCount, gradeCount, courseCount),
+                                    item.sems2_title != null ? "" + item.sems2_score : "N/A");
+                                courseCount++;
                             }
-                            mailmerge.Add(string.Format("群{0}_級{1}_學期1_科目成績{2}", domainCount, gradeCount, courseCount),
-                                item.sems1_title != null ? "" + item.sems1_score : "N/A");
-                            mailmerge.Add(string.Format("群{0}_級{1}_學期2_科目成績{2}", domainCount, gradeCount, courseCount),
-                                item.sems2_title != null ? "" + item.sems2_score : "N/A");
-                            courseCount++;
+                        }
+                        for (; courseCount <= 2; courseCount++)
+                        {
+                            mailmerge.Add(string.Format("群{0}_級{1}_學期1_科目{2}", domainCount, gradeCount, courseCount), new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = "" });
+                            mailmerge.Add(string.Format("群{0}_級{1}_學期2_科目{2}", domainCount, gradeCount, courseCount), new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = "" });
+                            mailmerge.Add(string.Format("群{0}_級{1}_學期1_科目成績{2}", domainCount, gradeCount, courseCount), "N/A");
+                            mailmerge.Add(string.Format("群{0}_級{1}_學期2_科目成績{2}", domainCount, gradeCount, courseCount), "N/A");
                         }
                         domainCount++;
                     }
@@ -327,7 +330,11 @@ namespace JH.IBSH.Report.Foreign
                  #endregion
                 System.IO.Stream docStream = new System.IO.MemoryStream(template);
                 Document each = new Document(docStream);
-
+                //DocumentBuilder db = new DocumentBuilder(each);
+                //Table table = (Table)each.GetChild(NodeType.Table, 1, true);
+                //table.AllowAutoFit = true;
+                //not work,why ?
+                
                 each.MailMerge.FieldMergingCallback = new MailMerge_MergeField();
                 each.MailMerge.Execute(mailmerge.Keys.ToArray(), mailmerge.Values.ToArray());
                 document.Sections.Add(document.ImportNode(each.FirstSection, true));
@@ -346,6 +353,8 @@ namespace JH.IBSH.Report.Foreign
                     DocumentBuilder builder = new DocumentBuilder(args.Document);
                     builder.MoveToMergeField(args.DocumentFieldName, false, false);
                     builder.CellFormat.HorizontalMerge = (args.FieldValue as mailmergeSpecial).cellmerge;
+                    builder.CellFormat.FitText = true;
+                    builder.CellFormat.WrapText = true;
                     args.Text = (args.FieldValue as mailmergeSpecial).value;
                 }
             }

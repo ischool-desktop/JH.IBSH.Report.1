@@ -55,9 +55,9 @@ namespace JH.IBSH.Report.Foreign
             Campus.Report.TemplateSettingForm TemplateForm;
             if (JH.IBSH.Report.Foreign.MainForm.ReportConfiguration9_12.Template == null)
             {
-                JH.IBSH.Report.Foreign.MainForm.ReportConfiguration9_12.Template = new Campus.Report.ReportTemplate(Properties.Resources._12樣版, Campus.Report.TemplateType.Word);
+                JH.IBSH.Report.Foreign.MainForm.ReportConfiguration9_12.Template = new Campus.Report.ReportTemplate(Properties.Resources._9_12_grade樣板, Campus.Report.TemplateType.Word);
             }
-            TemplateForm = new Campus.Report.TemplateSettingForm(JH.IBSH.Report.Foreign.MainForm.ReportConfiguration9_12.Template, new Campus.Report.ReportTemplate(Properties.Resources._12樣版, Campus.Report.TemplateType.Word));
+            TemplateForm = new Campus.Report.TemplateSettingForm(JH.IBSH.Report.Foreign.MainForm.ReportConfiguration9_12.Template, new Campus.Report.ReportTemplate(Properties.Resources._9_12_grade樣板, Campus.Report.TemplateType.Word));
             //預設名稱
             TemplateForm.DefaultFileName = "9~12 grade樣板";
             if (TemplateForm.ShowDialog() == DialogResult.OK)
