@@ -91,7 +91,7 @@ namespace JH.IBSH.Report.Foreign
         {
             filter f = (filter)e.Argument;
             Document document = new Document();
-            Byte[] template ;
+            Byte[] template;
             if (K12.Presentation.NLDPanels.Student.SelectedSource.Count <= 0)
                 return;
             List<string> sids = K12.Presentation.NLDPanels.Student.SelectedSource;
@@ -99,15 +99,15 @@ namespace JH.IBSH.Report.Foreign
             Dictionary<string, SemesterHistoryRecord> dshr = SemesterHistory.SelectByStudentIDs(sids).ToDictionary(x => x.RefStudentID, x => x);
             Dictionary<string, StudentRecord> dsr = Student.SelectByIDs(sids).ToDictionary(x => x.ID, x => x);
             Dictionary<string, SemesterScoreRecord> dssr = SemesterScore.SelectByStudentIDs(sids).ToDictionary(x => x.RefStudentID + "#" + x.SchoolYear + "#" + x.Semester, x => x);
-            DataTable dt = tool._Q.Select("select id,enrollment_school_year from student where id in ('"+string.Join("','",sids)+"')");
+            DataTable dt = tool._Q.Select("select id,enrollment_school_year from student where id in ('" + string.Join("','", sids) + "')");
             Dictionary<string, int> desy = new Dictionary<string, int>();
             int tmp;
             foreach (DataRow row in dt.Rows)
             {
-                if ( !desy.ContainsKey(""+row["id"]))
-                    desy.Add(""+row["id"],0);
-                if ( int.TryParse(""+row["enrollment_school_year"],out tmp) )
-                    desy[""+row["id"]] = tmp ;
+                if (!desy.ContainsKey("" + row["id"]))
+                    desy.Add("" + row["id"], 0);
+                if (int.TryParse("" + row["enrollment_school_year"], out tmp))
+                    desy["" + row["id"]] = tmp;
             }
             List<string> gys;
             int domainDicKey;
@@ -146,13 +146,13 @@ namespace JH.IBSH.Report.Foreign
                 return x.DisplayOrder.CompareTo(y.DisplayOrder);
             });
             int domainCount;
-            Dictionary<string,string> NationalityMapping = K12.EduAdminDataMapping.Utility.GetNationalityMappingDict();
+            Dictionary<string, string> NationalityMapping = K12.EduAdminDataMapping.Utility.GetNationalityMappingDict();
             Dictionary<string, object> mailmerge = new Dictionary<string, object>();
-            
-            foreach (KeyValuePair<string,SemesterHistoryRecord> row in dshr )
+            foreach (KeyValuePair<string, SemesterHistoryRecord> row in dshr)
             {//學生
                 grade lastGrade = null;
                 mailmerge.Clear();
+                mailmerge.Add("列印日期", DateTime.Today.ToString("MMMM d, yyyy", new System.Globalization.CultureInfo("en-US")));
                 domainCount = 1;
                 foreach (CourseGradeB.Tool.Domain domain in cgbdl)
                 {
@@ -166,7 +166,7 @@ namespace JH.IBSH.Report.Foreign
                 mailmerge.Add("學號", sr.StudentNumber);
                 mailmerge.Add("姓名", sr.Name);
                 mailmerge.Add("英文名", sr.EnglishName);
-                string gender ;
+                string gender;
                 switch (sr.Gender)
                 {
                     case "男":
@@ -180,12 +180,12 @@ namespace JH.IBSH.Report.Foreign
                         break;
                 }
                 mailmerge.Add("性別", gender);
-                
+
                 mailmerge.Add("國籍", sr.Nationality);
                 if (NationalityMapping.ContainsKey(sr.Nationality))
                     mailmerge["國籍"] = NationalityMapping[sr.Nationality];
 
-                mailmerge.Add("生日", sr.Birthday.HasValue?sr.Birthday.Value.ToString("d-MMMM-yyyy", new System.Globalization.CultureInfo("en-US")):"");
+                mailmerge.Add("生日", sr.Birthday.HasValue ? sr.Birthday.Value.ToString("d-MMMM-yyyy", new System.Globalization.CultureInfo("en-US")) : "");
                 string esy = "", edog = "";
                 if (desy.ContainsKey(row.Key) && desy[row.Key] != 0)
                 {
@@ -202,13 +202,13 @@ namespace JH.IBSH.Report.Foreign
 
                 #region 學生成績
                 Dictionary<int, grade> dgrade = new Dictionary<int, grade>();
-                
+
                 foreach (SemesterHistoryItem shi in row.Value.SemesterHistoryItems)
                 {
-                    if (!gys.Contains(""+shi.GradeYear))
+                    if (!gys.Contains("" + shi.GradeYear))
                         continue;
 
-                    int _gradeYear = shi.GradeYear ;
+                    int _gradeYear = shi.GradeYear;
                     string key = shi.RefStudentID + "#" + shi.SchoolYear + "#" + shi.Semester;
                     if (!dgrade.ContainsKey(_gradeYear))
                     {
@@ -218,10 +218,10 @@ namespace JH.IBSH.Report.Foreign
                             school_year = shi.SchoolYear
                         });
                     }
-                    if (shi.Semester == 1 )
+                    if (shi.Semester == 1)
                     {
                         dgrade[_gradeYear].semester = 1;
-                        if ( dssr.ContainsKey(key))
+                        if (dssr.ContainsKey(key))
                             dgrade[_gradeYear].sems1 = dssr[key];
                     }
                     else if (shi.Semester == 2)
@@ -234,14 +234,14 @@ namespace JH.IBSH.Report.Foreign
                 }
                 mailmerge.Add("GPA", "");
                 int gradeCount = 1;
-                
+
                 foreach (string gy in gys)
                 {//級別_
                     //群 , 科目 , 分數
                     Dictionary<string, Dictionary<string, course>> dcl = new Dictionary<string, Dictionary<string, course>>();
                     mailmerge.Add(string.Format("級別{0}", gradeCount), gy);
                     mailmerge.Add(string.Format("學年度{0}", gradeCount), "");
-                    
+
                     if (dgrade.ContainsKey(int.Parse(gy)))
                     {
                         grade g = dgrade[int.Parse(gy)];
@@ -250,24 +250,57 @@ namespace JH.IBSH.Report.Foreign
                         {
                             foreach (KeyValuePair<string, SubjectScore> ss in g.sems1.Subjects)
                             {
+                                string key, title;
+                                if (ss.Value.Domain == "Elective")
+                                {
+                                    title = ss.Value.Subject;
+                                    key = ss.Value.Subject;
+                                }
+                                else if (ss.Value.Domain == "Chinese")
+                                {
+                                    title = ss.Value.Subject + "(" + ss.Value.Level + ")";
+                                    key = "1";
+                                }
+                                else
+                                {
+                                    title = ss.Value.Subject;
+                                    key = "1";
+                                }
                                 if (!dcl.ContainsKey(ss.Value.Domain))
                                     dcl.Add(ss.Value.Domain, new Dictionary<string, course>());
-                                if (!dcl[ss.Value.Domain].ContainsKey(ss.Value.Subject))
-                                    dcl[ss.Value.Domain].Add(ss.Value.Subject, new course());
-                                dcl[ss.Value.Domain][ss.Value.Subject].sems1_title = ss.Value.Subject;
-                                dcl[ss.Value.Domain][ss.Value.Subject].sems1_score = ss.Value.Score.HasValue ? ss.Value.Score.Value : 0;
+                                if (!dcl[ss.Value.Domain].ContainsKey(key))
+                                    dcl[ss.Value.Domain].Add(key, new course());
+
+                                dcl[ss.Value.Domain][key].sems1_title = ss.Value.Subject;
+                                dcl[ss.Value.Domain][key].sems1_score = ss.Value.Score.HasValue ? ss.Value.Score.Value : 0;
                             }
                         }
                         if (g.sems2 != null)
                         {
                             foreach (KeyValuePair<string, SubjectScore> ss in g.sems2.Subjects)
                             {
+                                string key, title;
+                                if (ss.Value.Domain == "Elective")
+                                {
+                                    title = ss.Value.Subject;
+                                    key = ss.Value.Subject;
+                                }
+                                else if (ss.Value.Domain == "Chinese")
+                                {
+                                    title = ss.Value.Subject + "(" + ss.Value.Level + ")";
+                                    key = "1";
+                                }
+                                else
+                                {
+                                    title = ss.Value.Subject;
+                                    key = "1";
+                                }
                                 if (!dcl.ContainsKey(ss.Value.Domain))
                                     dcl.Add(ss.Value.Domain, new Dictionary<string, course>());
-                                if (!dcl[ss.Value.Domain].ContainsKey(ss.Value.Subject))
-                                    dcl[ss.Value.Domain].Add(ss.Value.Subject, new course());
-                                dcl[ss.Value.Domain][ss.Value.Subject].sems2_title = ss.Value.Subject;
-                                dcl[ss.Value.Domain][ss.Value.Subject].sems2_score = ss.Value.Score.HasValue ? ss.Value.Score.Value : 0;
+                                if (!dcl[ss.Value.Domain].ContainsKey(key))
+                                    dcl[ss.Value.Domain].Add(key, new course());
+                                dcl[ss.Value.Domain][key].sems2_title = ss.Value.Subject;
+                                dcl[ss.Value.Domain][key].sems2_score = ss.Value.Score.HasValue ? ss.Value.Score.Value : 0;
                             }
                         }
                         //使用學期歷程最後一筆的學年度學期
@@ -310,7 +343,7 @@ namespace JH.IBSH.Report.Foreign
                         domainCount++;
                     }
                     gradeCount++;
-                }   
+                }
 
                 GradeCumulateGPARecord gcgpar;
                 mailmerge.Add("級最高GPA", "");
@@ -320,26 +353,26 @@ namespace JH.IBSH.Report.Foreign
                     if (lastGrade.semester != null)
                     {
                         gcgpar = GradeCumulateGPA.GetGradeCumulateGPARecord(lastGrade.school_year, lastGrade.semester, lastGrade.grade_year);
-                        if ( gcgpar != null )
-                        { 
+                        if (gcgpar != null)
+                        {
                             mailmerge["級最高GPA"] = decimal.Round(gcgpar.MaxGPA, 2, MidpointRounding.AwayFromZero);
                             mailmerge["級平均GPA"] = decimal.Round(gcgpar.AvgGPA, 2, MidpointRounding.AwayFromZero);
                         }
                     }
                 }
-                 #endregion
+                #endregion
                 System.IO.Stream docStream = new System.IO.MemoryStream(template);
                 Document each = new Document(docStream);
                 //DocumentBuilder db = new DocumentBuilder(each);
                 //Table table = (Table)each.GetChild(NodeType.Table, 1, true);
                 //table.AllowAutoFit = true;
                 //not work,why ?
-                
+
                 each.MailMerge.FieldMergingCallback = new MailMerge_MergeField();
                 each.MailMerge.Execute(mailmerge.Keys.ToArray(), mailmerge.Values.ToArray());
                 document.Sections.Add(document.ImportNode(each.FirstSection, true));
             }
-            
+
             document.Sections.RemoveAt(0);
             e.Result = document;
         }
