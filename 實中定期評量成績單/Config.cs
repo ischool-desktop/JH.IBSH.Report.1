@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -65,6 +66,29 @@ namespace JH.IBSH.Report.PeriodicalExam
             {
                 JH.IBSH.Report.PeriodicalExam.MainForm.ReportConfiguration9_12.Template = TemplateForm.Template;
                 JH.IBSH.Report.PeriodicalExam.MainForm.ReportConfiguration9_12.Save();
+            }
+        }
+
+        private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            LinkLabel ll = (LinkLabel)sender;
+            try
+            {
+                SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
+                SaveFileDialog1.Filter = "Word (*.doc)|*.doc|所有檔案 (*.*)|*.*";
+                SaveFileDialog1.FileName = ll.Text.Replace("檢視", "");
+                if (SaveFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    Aspose.Words.Document doc2 = new Aspose.Words.Document(new MemoryStream(Properties.Resources.合併欄位總表));
+                    doc2.Save(SaveFileDialog1.FileName);
+                    System.Diagnostics.Process.Start(SaveFileDialog1.FileName);
+                }
+                else
+                    FISCA.Presentation.Controls.MsgBox.Show("檔案未儲存");
+            }
+            catch
+            {
+                FISCA.Presentation.Controls.MsgBox.Show("檔案儲存錯誤,請檢查檔案是否開啟中!!");
             }
         }
     }

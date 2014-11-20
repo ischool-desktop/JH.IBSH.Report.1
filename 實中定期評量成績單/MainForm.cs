@@ -170,7 +170,6 @@ where sc_attend.ref_student_id in (" +string.Join("," ,sids) + ") and course.sch
             foreach (StudentRecord sr in srl)
             {
                 mailmerge.Clear();
-
                // mailmerge.Add("學年", SchoolYear);
                 mailmerge.Add("學年", (SchoolYear + 1911) + "-" + (SchoolYear + 1912));
                 mailmerge.Add("學期", Semester);
