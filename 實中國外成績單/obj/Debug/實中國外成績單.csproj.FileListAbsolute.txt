@@ -17,4 +17,3 @@ C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中國外成績單\obj\Debug\
 C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中國外成績單\obj\Debug\實中國外成績單.csproj.GenerateResource.Cache
 C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中國外成績單\obj\Debug\JH.IBSH.Report.Foreign.dll
 C:\Users\aaron\Desktop\huangwc_desktop\dev.sh_d\實中國外成績單\obj\Debug\JH.IBSH.Report.Foreign.pdb
-C:\Users\Aaron\Desktop\huangwc_desktop\dev.sh_d\實中國外成績單\obj\Debug\實中國外成績單.csprojResolveAssemblyReference.cache
