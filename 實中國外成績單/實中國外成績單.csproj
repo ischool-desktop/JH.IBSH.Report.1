@@ -169,7 +169,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="Resources\12樣版.doc" />
     <None Include="Resources\6樣版.doc" />
     <None Include="Resources\8樣版.doc" />
     <None Include="Resources\9~12 grade樣板.doc" />

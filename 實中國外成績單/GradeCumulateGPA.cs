@@ -26,9 +26,9 @@ namespace JH.IBSH.Report.Foreign
     }
     public class GradeCumulateGPA
     {
-        private GradeCumulateGPA() { }
-        private static Dictionary<string, GradeCumulateGPARecord> dgcgpar = new Dictionary<string, GradeCumulateGPARecord>();
-        public static GradeCumulateGPARecord GetGradeCumulateGPARecord(int SchoolYear, int Semester, int Grade)
+        public GradeCumulateGPA() { }
+        private  Dictionary<string, GradeCumulateGPARecord> dgcgpar = new Dictionary<string, GradeCumulateGPARecord>();
+        public  GradeCumulateGPARecord GetGradeCumulateGPARecord(int SchoolYear, int Semester, int Grade)
         {
             string key = SchoolYear + "#" + Semester + "#" + Grade;
             if (dgcgpar.ContainsKey(key))

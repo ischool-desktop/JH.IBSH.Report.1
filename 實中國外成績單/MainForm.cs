@@ -87,6 +87,9 @@ namespace JH.IBSH.Report.Foreign
                 }
             );
         }
+        class edld {
+            public DateTime? entrance_date, leaving_date;
+        }
         void _bgw_DoWork(object sender, DoWorkEventArgs e)
         {
             filter f = (filter)e.Argument;
@@ -99,15 +102,17 @@ namespace JH.IBSH.Report.Foreign
             Dictionary<string, SemesterHistoryRecord> dshr = SemesterHistory.SelectByStudentIDs(sids).ToDictionary(x => x.RefStudentID, x => x);
             Dictionary<string, StudentRecord> dsr = Student.SelectByIDs(sids).ToDictionary(x => x.ID, x => x);
             Dictionary<string, SemesterScoreRecord> dssr = SemesterScore.SelectByStudentIDs(sids).ToDictionary(x => x.RefStudentID + "#" + x.SchoolYear + "#" + x.Semester, x => x);
-            DataTable dt = tool._Q.Select("select id,enrollment_school_year from student where id in ('" + string.Join("','", sids) + "')");
-            Dictionary<string, int> desy = new Dictionary<string, int>();
-            int tmp;
+            DataTable dt = tool._Q.Select("select ref_student_id,entrance_date,leaving_date from $jhcore_bilingual.studentrecordext where ref_student_id in ('" + string.Join("','", sids) + "')");
+            Dictionary<string, edld> dedld = new Dictionary<string, edld>();
+            DateTime tmp;
             foreach (DataRow row in dt.Rows)
             {
-                if (!desy.ContainsKey("" + row["id"]))
-                    desy.Add("" + row["id"], 0);
-                if (int.TryParse("" + row["enrollment_school_year"], out tmp))
-                    desy["" + row["id"]] = tmp;
+                if (!dedld.ContainsKey("" + row["ref_student_id"]))
+                    dedld.Add("" + row["ref_student_id"], new edld() { });
+                if (DateTime.TryParse("" + row["entrance_date"], out tmp))
+                    dedld["" + row["ref_student_id"]].entrance_date = tmp;
+                if (DateTime.TryParse("" + row["leaving_date"], out tmp))
+                    dedld["" + row["ref_student_id"]].leaving_date = tmp;
             }
             List<string> gys;
             int domainDicKey;
@@ -148,6 +153,8 @@ namespace JH.IBSH.Report.Foreign
             int domainCount;
             Dictionary<string, string> NationalityMapping = K12.EduAdminDataMapping.Utility.GetNationalityMappingDict();
             Dictionary<string, object> mailmerge = new Dictionary<string, object>();
+
+            GradeCumulateGPA gcgpa = new GradeCumulateGPA();
             foreach (KeyValuePair<string, SemesterHistoryRecord> row in dshr)
             {//學生
                 grade lastGrade = null;
@@ -187,10 +194,12 @@ namespace JH.IBSH.Report.Foreign
 
                 mailmerge.Add("生日", sr.Birthday.HasValue ? sr.Birthday.Value.ToString("d-MMMM-yyyy", new System.Globalization.CultureInfo("en-US")) : "");
                 string esy = "", edog = "";
-                if (desy.ContainsKey(row.Key) && desy[row.Key] != 0)
+                if (dedld.ContainsKey(row.Key))
                 {
-                    esy = "August-" + (desy[row.Key] + 1911);
-                    edog = "June-" + (desy[row.Key] + 1911 + 12);
+                    if (dedld[row.Key].entrance_date != null)
+                        esy = dedld[row.Key].entrance_date.Value.ToString("MMMM-yyyy", new System.Globalization.CultureInfo("en-US"));
+                    if (dedld[row.Key].leaving_date != null)
+                        edog = dedld[row.Key].leaving_date.Value.ToString("MMMM-yyyy", new System.Globalization.CultureInfo("en-US"));
                 }
                 mailmerge.Add("入學日期", esy);
                 mailmerge.Add("預計畢業日期", edog);
@@ -249,7 +258,7 @@ namespace JH.IBSH.Report.Foreign
                         if (g.sems1 != null)
                         {
                             foreach (KeyValuePair<string, SubjectScore> ss in g.sems1.Subjects)
-                            {
+                            {                                
                                 string key, title;
                                 if (ss.Value.Domain == "Elective")
                                 {
@@ -316,6 +325,49 @@ namespace JH.IBSH.Report.Foreign
                         int courseCount = 1;
                         if (dcl.ContainsKey(domain.Name))
                         {
+                            if (domain.Name == "Elective")
+                            {
+                                Dictionary<string, course> cl = new Dictionary<string, course>();
+                                int sem1 = 1, sem2 = 1;
+                                foreach (course item in dcl[domain.Name].Values)
+                                {
+                                    if (item.sems1_title != null && item.sems2_title != null)
+                                    {
+                                        cl.Add("" + sem1, item);
+                                        sem1++;
+                                        sem2++;
+                                    }
+                                }
+                                for (int i = sem1; i <= 2; i++)
+                                    cl.Add("" + i, new course());
+                                foreach (course item in dcl[domain.Name].Values)
+                                {
+                                    if (item.sems1_title != null && item.sems2_title != null)
+                                        continue;
+                                    if (item.sems1_title != null)
+                                    {
+                                        if ( sem1 >= 3 )
+                                            throw new Exception("選修科目超過3科，無法列印");
+                                        cl["" + sem1].sems1_title = item.sems1_title;
+                                        cl["" + sem1].sems1_score = item.sems1_score;
+                                        sem1++;
+                                    }
+                                    else if (item.sems2_title != null)
+                                    {
+                                        if (sem2 >= 3)
+                                            throw new Exception("選修科目超過3科，無法列印");
+                                        cl["" + sem2].sems2_title = item.sems2_title;
+                                        cl["" + sem2].sems2_score = item.sems2_score;
+                                        sem2++;
+                                    }
+                                    else
+                                    {
+                                        throw new Exception("Not Possible!");
+                                    }
+                                    
+                                }
+                                dcl[domain.Name] = cl;
+                            }
                             foreach (course item in dcl[domain.Name].Values)
                             {
                                 mailmerge.Add(string.Format("群{0}_級{1}_學期1_科目{2}", domainCount, gradeCount, courseCount), item.sems1_title);
@@ -345,20 +397,20 @@ namespace JH.IBSH.Report.Foreign
                     gradeCount++;
                 }
 
-                GradeCumulateGPARecord gcgpar;
+                GradeCumulateGPARecord gcgpar ;
                 mailmerge.Add("級最高GPA", "");
                 mailmerge.Add("級平均GPA", "");
                 if (lastGrade != null && sr.Class != null)
                 {
-                    if (lastGrade.semester != null)
+                    //if (lastGrade.semester != null)
+                    //{
+                    gcgpar = gcgpa.GetGradeCumulateGPARecord(lastGrade.school_year, lastGrade.semester, lastGrade.grade_year);
+                    if (gcgpar != null)
                     {
-                        gcgpar = GradeCumulateGPA.GetGradeCumulateGPARecord(lastGrade.school_year, lastGrade.semester, lastGrade.grade_year);
-                        if (gcgpar != null)
-                        {
-                            mailmerge["級最高GPA"] = decimal.Round(gcgpar.MaxGPA, 2, MidpointRounding.AwayFromZero);
-                            mailmerge["級平均GPA"] = decimal.Round(gcgpar.AvgGPA, 2, MidpointRounding.AwayFromZero);
-                        }
+                        mailmerge["級最高GPA"] = decimal.Round(gcgpar.MaxGPA, 2, MidpointRounding.AwayFromZero);
+                        mailmerge["級平均GPA"] = decimal.Round(gcgpar.AvgGPA, 2, MidpointRounding.AwayFromZero);
                     }
+                    //}
                 }
                 #endregion
                 System.IO.Stream docStream = new System.IO.MemoryStream(template);
@@ -381,14 +433,20 @@ namespace JH.IBSH.Report.Foreign
         {
             public void FieldMerging(Aspose.Words.Reporting.FieldMergingArgs args)
             {
-                if (args.FieldValue != null && args.FieldValue is mailmergeSpecial )
+                if (args.FieldValue != null)
                 {
                     DocumentBuilder builder = new DocumentBuilder(args.Document);
                     builder.MoveToMergeField(args.DocumentFieldName, false, false);
-                    builder.CellFormat.HorizontalMerge = (args.FieldValue as mailmergeSpecial).cellmerge;
+                    if (args.FieldValue is mailmergeSpecial)
+                    {
+                        builder.CellFormat.HorizontalMerge = (args.FieldValue as mailmergeSpecial).cellmerge;
+                    }
                     builder.CellFormat.FitText = true;
                     builder.CellFormat.WrapText = true;
-                    args.Text = (args.FieldValue as mailmergeSpecial).value;
+                    if (args.FieldValue is mailmergeSpecial)
+                    {
+                        args.Text = (args.FieldValue as mailmergeSpecial).value;
+                    }
                 }
             }
             public void ImageFieldMerging(Aspose.Words.Reporting.ImageFieldMergingArgs args)
@@ -398,8 +456,13 @@ namespace JH.IBSH.Report.Foreign
     
         void _bgw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            Document inResult = (Document)e.Result;
             btnPrint.Enabled = true;
+            if (e.Error != null)
+            {
+                MessageBox.Show(e.Error.Message);
+                return;
+            }
+            Document inResult = (Document)e.Result;
             try
             {
                 SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
