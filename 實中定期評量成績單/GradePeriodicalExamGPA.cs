@@ -69,26 +69,31 @@ where  class.grade_year =" + Grade + " and course.school_year=" + SchoolYear + "
                 string id = "" + row["id"];
                 if (!dscetr.ContainsKey(id))
                     dscetr.Add(id, new List<CustomSCETakeRecord>());
-                dscetr[id].Add(new CustomSCETakeRecord()
+                decimal score ;
+                //#TODO 2014/11/26 確認為略過
+                if (decimal.TryParse("" + row["score"],out score))
                 {
-                    RefStudentID = id,
-                    Name = "" + row["name"],
-                    EnglishName = "" + row["english_name"],
-                    StudentNumber = "" + row["student_number"],
-                    SeatNo = "" + row["seat_no"],
-                    ClassName = "" + row["class_name"],
-                    TeacherName = "" + row["teacher_name"],
-                    GradeYear = "" + row["grade_year"],
-                    Subject = "" + row["subject"],
-                    Score = decimal.Parse("" + row["score"]),
-                    CourseId = "" + row["course_id"],
-                    CoursePeriod = int.Parse("" + row["period"]),
-                    CourseCredit = int.Parse("" + row["credit"]),
-                    SubjectEnglishName = "" + row["subject_english_name"],
-                    CourseGroup = "" + row["group"],
-                    CourseType = JH.IBSH.Report.PeriodicalExam.GradePeriodicalExamGPA.StringToSubjectType("" + row["type"]),
-                    ExamId = "" + row["exam_id"]
-                });
+                    dscetr[id].Add(new CustomSCETakeRecord()
+                    {
+                        RefStudentID = id,
+                        Name = "" + row["name"],
+                        EnglishName = "" + row["english_name"],
+                        StudentNumber = "" + row["student_number"],
+                        SeatNo = "" + row["seat_no"],
+                        ClassName = "" + row["class_name"],
+                        TeacherName = "" + row["teacher_name"],
+                        GradeYear = "" + row["grade_year"],
+                        Subject = "" + row["subject"],
+                        Score = score,
+                        CourseId = "" + row["course_id"],
+                        CoursePeriod = int.Parse("" + row["period"]),
+                        CourseCredit = int.Parse("" + row["credit"]),
+                        SubjectEnglishName = "" + row["subject_english_name"],
+                        CourseGroup = "" + row["group"],
+                        CourseType = JH.IBSH.Report.PeriodicalExam.GradePeriodicalExamGPA.StringToSubjectType("" + row["type"]),
+                        ExamId = "" + row["exam_id"]
+                    });
+                }
             }
             Dictionary<string, decimal> StudentGPA = new Dictionary<string, decimal>();
             foreach (KeyValuePair<string, List<CustomSCETakeRecord>> row in dscetr)

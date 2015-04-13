@@ -14,6 +14,7 @@ using Aspose.Words.Drawing;
 using Campus.Report;
 using JHSchool.Data;
 using K12.Data;
+using System.IO;
 //using Campus.ePaper;
 
 namespace JH.IBSH.Report.PeriodicalExam
@@ -89,15 +90,15 @@ namespace JH.IBSH.Report.PeriodicalExam
         {
             filter f = (filter)e.Argument;
             Document document = new Document();
-            Document template3_6 = (ReportConfiguration3_6.Template != null) //3-6單頁範本
-                 ? ReportConfiguration3_6.Template.ToDocument()
-                 : new Campus.Report.ReportTemplate(Properties.Resources._6樣版, Campus.Report.TemplateType.Word).ToDocument();
-            Document template7_8 = (ReportConfiguration7_8.Template != null) //7-8單頁範本
-                 ? ReportConfiguration7_8.Template.ToDocument()
-                 : new Campus.Report.ReportTemplate(Properties.Resources._8樣版, Campus.Report.TemplateType.Word).ToDocument();
-            Document template9_12 = (ReportConfiguration9_12.Template != null) //9-12單頁範本
-                 ? ReportConfiguration9_12.Template.ToDocument()
-                 : new Campus.Report.ReportTemplate(Properties.Resources._9樣版, Campus.Report.TemplateType.Word).ToDocument();
+            byte[] template3_6 = (ReportConfiguration3_6.Template != null) //3-6單頁範本
+                 ? ReportConfiguration3_6.Template.ToBinary()
+                 : new Campus.Report.ReportTemplate(Properties.Resources._6樣版, Campus.Report.TemplateType.Word).ToBinary();
+            byte[] template7_8 = (ReportConfiguration7_8.Template != null) //7-8單頁範本
+                 ? ReportConfiguration7_8.Template.ToBinary()
+                 : new Campus.Report.ReportTemplate(Properties.Resources._8樣版, Campus.Report.TemplateType.Word).ToBinary();
+            byte[] template9_12 = (ReportConfiguration9_12.Template != null) //9-12單頁範本
+                 ? ReportConfiguration9_12.Template.ToBinary()
+                 : new Campus.Report.ReportTemplate(Properties.Resources._9樣版, Campus.Report.TemplateType.Word).ToBinary();
             if (K12.Presentation.NLDPanels.Student.SelectedSource.Count <= 0)
                 return;
             List<string> sids = K12.Presentation.NLDPanels.Student.SelectedSource;
@@ -116,13 +117,13 @@ left join student on student.id=sc_attend.ref_student_id
 left join class on student.ref_class_id=class.id
 left join $ischool.subject.list on course.subject=$ischool.subject.list.name 
 left join teacher on teacher.id=class.ref_teacher_id
-where sc_attend.ref_student_id in (" +string.Join("," ,sids) + ") and course.school_year=" + SchoolYear + " and course.semester=" + Semester + " and sce_take.ref_exam_id = " + Exam + "";
+where sc_attend.ref_student_id in (" + string.Join(",", sids) + ") and course.school_year=" + SchoolYear + " and course.semester=" + Semester + " and sce_take.ref_exam_id = " + Exam + "";
             DataTable dt = tool._Q.Select(sql);
             //return;
             Dictionary<string, List<CustomSCETakeRecord>> dscetr = new Dictionary<string, List<CustomSCETakeRecord>>();
             foreach (DataRow row in dt.Rows)
             {
-                string id = ""+row["id"] ;
+                string id = "" + row["id"];
                 if (!dscetr.ContainsKey(id))
                     dscetr.Add(id, new List<CustomSCETakeRecord>());
                 decimal tmp_score;
@@ -138,10 +139,10 @@ where sc_attend.ref_student_id in (" +string.Join("," ,sids) + ") and course.sch
                     TeacherName = "" + row["teacher_name"],
                     GradeYear = "" + row["grade_year"],
                     Subject = "" + row["subject"],
-                    Score = decimal.TryParse("" + row["score"],out tmp_score)?tmp_score:tmp_score,
+                    Score = decimal.TryParse("" + row["score"], out tmp_score) ? tmp_score : tmp_score,
                     CourseId = "" + row["course_id"],
-                    CoursePeriod = int.TryParse("" + row["period"],out tmp_period)?tmp_period:tmp_period,
-                    CourseCredit = int.TryParse("" + row["credit"],out tmp_credit)?tmp_credit:tmp_credit,
+                    CoursePeriod = int.TryParse("" + row["period"], out tmp_period) ? tmp_period : tmp_period,
+                    CourseCredit = int.TryParse("" + row["credit"], out tmp_credit) ? tmp_credit : tmp_credit,
                     SubjectEnglishName = "" + row["subject_english_name"],
                     CourseGroup = "" + row["group"],
                     CourseType = JH.IBSH.Report.PeriodicalExam.GradePeriodicalExamGPA.StringToSubjectType("" + row["type"]),
@@ -151,7 +152,8 @@ where sc_attend.ref_student_id in (" +string.Join("," ,sids) + ") and course.sch
 
             Dictionary<string, object> mailmerge = new Dictionary<string, object>();
             List<StudentRecord> srl = K12.Data.Student.SelectByIDs(sids);
-            srl.Sort(delegate(StudentRecord a, StudentRecord b) {
+            srl.Sort(delegate(StudentRecord a, StudentRecord b)
+            {
                 StudentRecord aStudent = a;
                 ClassRecord aClass = a.Class;
                 StudentRecord bStudent = b;
@@ -170,7 +172,7 @@ where sc_attend.ref_student_id in (" +string.Join("," ,sids) + ") and course.sch
             foreach (StudentRecord sr in srl)
             {
                 mailmerge.Clear();
-               // mailmerge.Add("學年", SchoolYear);
+                // mailmerge.Add("學年", SchoolYear);
                 mailmerge.Add("學年", (SchoolYear + 1911) + "-" + (SchoolYear + 1912));
                 mailmerge.Add("學期", Semester);
                 mailmerge.Add("學段", ExamText);
@@ -188,36 +190,44 @@ where sc_attend.ref_student_id in (" +string.Join("," ,sids) + ") and course.sch
                 mailmerge.Add("學校英文名稱", School.EnglishName);
 
                 Document each;
-                each = (Document)template3_6.Clone(true);
                 int subjecti = 1;
                 int parti = 1;
-                if (dscetr.ContainsKey(sr.ID) && sr.Class != null && sr.Class.GradeYear.HasValue)
+                //if (dscetr.ContainsKey(sr.ID) && sr.Class != null && sr.Class.GradeYear.HasValue)
+                //{
+                #region 學生成績
+                switch (gradeSection)
                 {
-                    #region 學生成績
-                    switch (gradeSection)
-                    {
-                        case "3~6":
-                            each = (Document)template3_6.Clone(true);
+                    case "3~6":
+                        each = new Document(new MemoryStream(template3_6));
+                        if (dscetr.ContainsKey(sr.ID))
+                        {
                             foreach (CustomSCETakeRecord item in dscetr[sr.ID])
                             {
                                 mailmerge.Add(string.Format("科目{0}", subjecti), item.Subject + " " + item.SubjectEnglishName);
                                 mailmerge.Add(string.Format("成績{0}", subjecti), CourseGradeB.Tool.GPA.Eval(item.Score).Letter);
                                 subjecti++;
                             }
-                            break;
-                        case "7~8":
-                            each = (Document)template7_8.Clone(true);
+                        }
+                        break;
+                    case "7~8":
+                        each = new Document(new MemoryStream(template7_8));
+                        if (dscetr.ContainsKey(sr.ID))
+                        {
+
                             foreach (CustomSCETakeRecord item in dscetr[sr.ID])
                             {
                                 mailmerge.Add(string.Format("科目{0}", subjecti), item.Subject + " " + item.SubjectEnglishName);
                                 mailmerge.Add(string.Format("成績{0}", subjecti), CourseGradeB.Tool.GPA.Eval(item.Score).Letter);
                                 subjecti++;
                             }
-                            break;
-                        case "9~12":
-                            each = (Document)template9_12.Clone(true);
-                            int personalCreditCount = 0;
-                            decimal personalGPACount = 0, personalAverageCount = 0;
+                        }
+                        break;
+                    case "9~12":
+                        each = new Document(new MemoryStream(template9_12));
+                        int personalCreditCount = 0;
+                        decimal personalGPACount = 0, personalAverageCount = 0;
+                        if (dscetr.ContainsKey(sr.ID))
+                        {
                             foreach (CustomSCETakeRecord item in dscetr[sr.ID])
                             {
                                 mailmerge.Add(string.Format("科目{0}", subjecti), item.Subject + " " + item.SubjectEnglishName);
@@ -237,7 +247,7 @@ where sc_attend.ref_student_id in (" +string.Join("," ,sids) + ") and course.sch
                                 mailmerge.Add("科目平均", decimal.Round(personalAverageCount / personalCreditCount, 2, MidpointRounding.AwayFromZero));
                                 mailmerge.Add("GPA", decimal.Round(personalGPACount / personalCreditCount, 2, MidpointRounding.AwayFromZero));
                             }
-                            if (sr.Class.GradeYear.HasValue)
+                            if (sr.Class != null && sr.Class.GradeYear.HasValue)
                             {
                                 GradePeriodicalExamGPARecord gpegpar = GradePeriodicalExamGPA.GetGradePeriodicalExamGPARecord(SchoolYear, Semester, sr.Class.GradeYear.Value, Exam);
                                 List<GPADistributionPart> gpad = GradePeriodicalExamGPA.toGPADistribution(gpegpar);
@@ -249,10 +259,12 @@ where sc_attend.ref_student_id in (" +string.Join("," ,sids) + ") and course.sch
                                     parti++;
                                 }
                             }
-                            break;
-                    }
-                    #endregion
+                        }
+                        break;
+                    default:
+                        return;
                 }
+                #endregion
                 for (; parti <= 5; parti++)
                 {
                     mailmerge.Add(string.Format("GPA分段{0}", parti), "");
@@ -269,7 +281,7 @@ where sc_attend.ref_student_id in (" +string.Join("," ,sids) + ") and course.sch
 
                 document.Sections.Add(document.ImportNode(each.FirstSection, true));
             }
-            
+
             document.Sections.RemoveAt(0);
             e.Result = document;
         }
