@@ -80,7 +80,7 @@ namespace JH.IBSH.Report.Foreign
                 return;
             }
             btnPrint.Enabled = false;
-            //List<CourseGradeB.Tool.Domain> cgbdl = CourseGradeB.Tool.DomainDic[6];
+           // List<CourseGradeB.Tool.Domain> cgbdl = CourseGradeB.Tool.DomainDic[6];
             _bgw.RunWorkerAsync(new filter
                 {
                     GradeType = comboBoxEx2.Text
@@ -281,7 +281,10 @@ namespace JH.IBSH.Report.Foreign
                                     dcl[ss.Value.Domain].Add(key, new course());
 
                                 dcl[ss.Value.Domain][key].sems1_title = ss.Value.Subject;
-                                dcl[ss.Value.Domain][key].sems1_score = ss.Value.Score.HasValue ? ss.Value.Score.Value : 0;
+
+                                // 因需求調整顯示到整數位四捨五入 2015/8
+                                //dcl[ss.Value.Domain][key].sems1_score = ss.Value.Score.HasValue ? ss.Value.Score.Value : 0;
+                                dcl[ss.Value.Domain][key].sems1_score = ss.Value.Score.HasValue ? Math.Round(ss.Value.Score.Value,0,MidpointRounding.AwayFromZero) : 0;
                             }
                         }
                         if (g.sems2 != null)
@@ -309,7 +312,9 @@ namespace JH.IBSH.Report.Foreign
                                 if (!dcl[ss.Value.Domain].ContainsKey(key))
                                     dcl[ss.Value.Domain].Add(key, new course());
                                 dcl[ss.Value.Domain][key].sems2_title = ss.Value.Subject;
-                                dcl[ss.Value.Domain][key].sems2_score = ss.Value.Score.HasValue ? ss.Value.Score.Value : 0;
+                                // 因需求調整顯示到整數位四捨五入 2015/8
+                                //dcl[ss.Value.Domain][key].sems2_score = ss.Value.Score.HasValue ? ss.Value.Score.Value : 0;
+                                dcl[ss.Value.Domain][key].sems2_score = ss.Value.Score.HasValue ? Math.Round(ss.Value.Score.Value,0,MidpointRounding.AwayFromZero) : 0;
                             }
                         }
                         //使用學期歷程最後一筆的學年度學期

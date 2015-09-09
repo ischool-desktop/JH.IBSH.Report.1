@@ -48,9 +48,9 @@
       <HintPath>Library\Campus.Report.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CourseGradeB, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="CourseGradeB, Version=1.0.0.50, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ischool desktop\modules\CourseGradeB\CourseGradeB.dll</HintPath>
+      <HintPath>Library\CourseGradeB.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DevComponents.DotNetBar2, Version=9.5.0.1, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL">
@@ -158,6 +158,8 @@
     <Content Include="Library\Aspose.Cells.dll" />
     <Content Include="Library\Aspose.Words.dll" />
     <Content Include="Library\Campus.Report.dll" />
+    <Content Include="Library\CourseGradeB.dll" />
+    <Content Include="Library\CourseGradeB.pdb" />
     <Content Include="Library\DevComponents.DotNetBar2.dll" />
     <Content Include="Library\FISCA.dll" />
     <Content Include="Library\FISCA.LogAgent.dll" />
@@ -165,6 +167,8 @@
     <Content Include="Library\FISCA.Presentation.dll" />
     <Content Include="Library\JHSchool.Data.dll" />
     <Content Include="Library\K12.Data.dll" />
+    <Content Include="Library\K12.EduAdminDataMapping.dll" />
+    <Content Include="Library\K12.EduAdminDataMapping.pdb" />
     <Content Include="Library\K12.Presentation.dll" />
   </ItemGroup>
   <ItemGroup />
