@@ -43,9 +43,9 @@
       <HintPath>Library\Campus.Report.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CourseGradeB">
-      <HintPath>..\..\ischool desktop\modules\CourseGradeB\CourseGradeB.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="CourseGradeB, Version=1.0.0.50, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\CourseGradeB.dll</HintPath>
     </Reference>
     <Reference Include="DevComponents.DotNetBar2, Version=9.5.0.1, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -144,6 +144,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Library\Campus.Report.dll" />
+    <Content Include="Library\CourseGradeB.dll" />
+    <Content Include="Library\CourseGradeB.pdb" />
     <Content Include="Library\DevComponents.DotNetBar2.dll" />
     <Content Include="Library\FISCA.dll" />
     <Content Include="Library\FISCA.LogAgent.dll" />
