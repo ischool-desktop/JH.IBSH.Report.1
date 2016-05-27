@@ -16,8 +16,8 @@ namespace 實中學期成績匯入_含領域
         {
             FactoryProvider.FieldFactory.Add(new FieldValidatorFactory());
             
-            MenuButton rbItemImport = MotherForm.RibbonBarItems["學生", "資料統計"]["匯入"]["成績相關匯入"];
-            rbItemImport["匯入學期成績"].Click += delegate
+            MenuButton rbItemImport = MotherForm.RibbonBarItems["學生", "資料統計"]["匯入"]["成績相關匯入(穎驊版)"];
+            rbItemImport["匯入學期成績(穎驊版)"].Click += delegate
             {
                 UpdateHelper uh = new UpdateHelper();
                 //uh.Execute("TRUNCATE TABLE sems_subj_score");

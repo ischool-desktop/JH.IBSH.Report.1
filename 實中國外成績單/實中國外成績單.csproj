@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\..\Desktop\ischool\實驗高中%28雙語部%29\addmodules\國外成績單\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -36,7 +36,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Aspose.Words_201402">
-      <HintPath>..\..\github\Library\Aspose.Words_201402.dll</HintPath>
+      <HintPath>Library\Aspose.Words_201402.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Campus.ePaper">
@@ -156,6 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Library\Aspose.Cells.dll" />
+    <Content Include="Library\Aspose.Cells_201402.dll" />
     <Content Include="Library\Aspose.Words.dll" />
     <Content Include="Library\Campus.Report.dll" />
     <Content Include="Library\CourseGradeB.dll" />
@@ -171,7 +172,6 @@
     <Content Include="Library\K12.EduAdminDataMapping.pdb" />
     <Content Include="Library\K12.Presentation.dll" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="Resources\6樣版.doc" />
     <None Include="Resources\8樣版.doc" />

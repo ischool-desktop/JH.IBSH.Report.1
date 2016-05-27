@@ -31,8 +31,7 @@ namespace JH.IBSH.Report.PeriodicalExam
         public static ReportConfiguration ReportConfiguration7_8 = new Campus.Report.ReportConfiguration(config7_8);
         public static ReportConfiguration ReportConfiguration9_12 = new Campus.Report.ReportConfiguration(config9_12);
         public string current = "評量通知單";
-        class filter
-        {
+        class filter {
             public SchoolYearSemester sys;
             public int exam;
             public string gradeSection;
@@ -42,7 +41,7 @@ namespace JH.IBSH.Report.PeriodicalExam
         {
             InitializeComponent();
             #region 設定comboBox選單
-            foreach (int item in Enumerable.Range(int.Parse(School.DefaultSchoolYear) - 11, 13))
+            foreach (int item in Enumerable.Range(int.Parse(School.DefaultSchoolYear)-11, 13) )
             {
                 comboBoxEx2.Items.Add(item);
             }
@@ -54,7 +53,7 @@ namespace JH.IBSH.Report.PeriodicalExam
             {
                 comboBoxEx4.Items.Add(item);
             }
-            foreach (string item in new string[] { "3~6", "7~8", "9~12" })
+            foreach (string item in new string[] { "3~6", "7~8","9~12" })
             {
                 comboBoxEx1.Items.Add(item);
             }
@@ -81,8 +80,8 @@ namespace JH.IBSH.Report.PeriodicalExam
             _bgw.RunWorkerAsync(new filter
                 {
                     sys = new SchoolYearSemester(int.Parse(comboBoxEx2.Text), int.Parse(comboBoxEx3.Text)),
-                    exam = comboBoxEx4.Text == "Midterm" ? 1 : 2,
-                    examText = comboBoxEx4.Text,
+                    exam = comboBoxEx4.Text=="Midterm"?1:2,
+                    examText = comboBoxEx4.Text ,
                     gradeSection = comboBoxEx1.Text
                 }
             );
@@ -170,37 +169,6 @@ where sc_attend.ref_student_id in (" + string.Join(",", sids) + ") and course.sc
 
                 return aa.CompareTo(bb);
             });
-
-
-            #region 成績排序
-            List<CourseGradeB.Tool.Domain> cgbdl;
-            switch (gradeSection)
-            {
-                case "3~6":
-                    cgbdl = CourseGradeB.Tool.DomainDic[6];
-                    break;
-                case "7~8":
-                    cgbdl = CourseGradeB.Tool.DomainDic[8];
-                    break;
-                default:
-                case "9~12":
-                    cgbdl = CourseGradeB.Tool.DomainDic[12];
-                    break;
-            }
-            var subjectComparer = CourseGradeB.Tool.GetSubjectCompare(cgbdl);
-            Dictionary<string, int> dicDomainDisplayIndex = new Dictionary<string, int>();
-            foreach (var domain in cgbdl)
-            {
-                dicDomainDisplayIndex.Add(domain.Name, domain.DisplayOrder);
-            }
-            foreach (var list in dscetr.Values)
-            {
-                list.Sort(delegate(CustomSCETakeRecord r1, CustomSCETakeRecord r2)
-                {
-                    return subjectComparer.Compare(r1.Subject, r2.Subject);
-                });
-            }
-            #endregion
             foreach (StudentRecord sr in srl)
             {
                 mailmerge.Clear();
@@ -231,11 +199,6 @@ where sc_attend.ref_student_id in (" + string.Join(",", sids) + ") and course.sc
                 {
                     case "3~6":
                         each = new Document(new MemoryStream(template3_6));
-                        cgbdl = CourseGradeB.Tool.DomainDic[6];
-                        //cgbdl.Sort(delegate(CourseGradeB.Tool.Domain x, CourseGradeB.Tool.Domain y)
-                        //{
-                        //    return x.DisplayOrder.CompareTo(y.DisplayOrder);
-                        //});
                         if (dscetr.ContainsKey(sr.ID))
                         {
                             foreach (CustomSCETakeRecord item in dscetr[sr.ID])
@@ -248,7 +211,6 @@ where sc_attend.ref_student_id in (" + string.Join(",", sids) + ") and course.sc
                         break;
                     case "7~8":
                         each = new Document(new MemoryStream(template7_8));
-                        cgbdl = CourseGradeB.Tool.DomainDic[8];
                         if (dscetr.ContainsKey(sr.ID))
                         {
 
@@ -262,7 +224,6 @@ where sc_attend.ref_student_id in (" + string.Join(",", sids) + ") and course.sc
                         break;
                     case "9~12":
                         each = new Document(new MemoryStream(template9_12));
-                        cgbdl = CourseGradeB.Tool.DomainDic[12];
                         int personalCreditCount = 0;
                         decimal personalGPACount = 0, personalAverageCount = 0;
                         if (dscetr.ContainsKey(sr.ID))
@@ -324,7 +285,7 @@ where sc_attend.ref_student_id in (" + string.Join(",", sids) + ") and course.sc
             document.Sections.RemoveAt(0);
             e.Result = document;
         }
-
+        
         void _bgw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             Document inResult = (Document)e.Result;
@@ -362,5 +323,5 @@ where sc_attend.ref_student_id in (" + string.Join(",", sids) + ") and course.sc
             this.Close();
         }
     }
-
+    
 }
