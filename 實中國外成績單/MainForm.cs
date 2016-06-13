@@ -316,6 +316,9 @@ namespace JH.IBSH.Report.Foreign
 
                                         if (!dcl.ContainsKey(subjectScore.Domain))
                                             dcl.Add(subjectScore.Domain, new List<SubjectScore>());
+
+                                        subjectScore.Score = subjectScore.Score.HasValue ? Math.Round(subjectScore.Score.Value, 0, MidpointRounding.AwayFromZero) : 0;
+
                                         dcl[subjectScore.Domain].Add(subjectScore);
                                     }
                                 }

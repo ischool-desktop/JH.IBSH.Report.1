@@ -34,3 +34,10 @@ C:\Users\ED\Documents\ischool_git\jh.ibsh.report.1\實中國外成績單\obj\Deb
 C:\Users\ED\Desktop\ischool\實驗高中(雙語部)\addmodules\國外成績單\JH.IBSH.Report.Foreign.dll
 C:\Users\ED\Desktop\ischool\實驗高中(雙語部)\addmodules\國外成績單\JH.IBSH.Report.Foreign.pdb
 C:\Users\ED\Documents\ischool_git\jh.ibsh.report.1\實中國外成績單\obj\Debug\實中國外成績單.csprojResolveAssemblyReference.cache
+C:\Users\ED\Documents\ischool_github\JH.IBSH.Report.1\實中國外成績單\obj\Debug\實中國外成績單.csprojResolveAssemblyReference.cache
+C:\Users\ED\Documents\ischool_github\JH.IBSH.Report.1\實中國外成績單\obj\Debug\JH.IBSH.Report.Foreign.Config.resources
+C:\Users\ED\Documents\ischool_github\JH.IBSH.Report.1\實中國外成績單\obj\Debug\JH.IBSH.Report.Foreign.MainForm.resources
+C:\Users\ED\Documents\ischool_github\JH.IBSH.Report.1\實中國外成績單\obj\Debug\JH.IBSH.Report.Foreign.Properties.Resources.resources
+C:\Users\ED\Documents\ischool_github\JH.IBSH.Report.1\實中國外成績單\obj\Debug\實中國外成績單.csproj.GenerateResource.Cache
+C:\Users\ED\Documents\ischool_github\JH.IBSH.Report.1\實中國外成績單\obj\Debug\JH.IBSH.Report.Foreign.dll
+C:\Users\ED\Documents\ischool_github\JH.IBSH.Report.1\實中國外成績單\obj\Debug\JH.IBSH.Report.Foreign.pdb
