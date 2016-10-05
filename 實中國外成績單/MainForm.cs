@@ -172,11 +172,11 @@ namespace JH.IBSH.Report.Foreign
                     Elective.Hours = 2;
                     Elective.Name = "Elective";
                     Elective.ShortName = "Elective";
-                 
+
                     cgbdl.Add(Elective);
                 }
-              
-                cgbdl.Sort(delegate(CourseGradeB.Tool.Domain x, CourseGradeB.Tool.Domain y)
+
+                cgbdl.Sort(delegate (CourseGradeB.Tool.Domain x, CourseGradeB.Tool.Domain y)
                 {
                     return x.DisplayOrder.CompareTo(y.DisplayOrder);
                 });
@@ -402,6 +402,16 @@ namespace JH.IBSH.Report.Foreign
                                     mailmerge[string.Format("{0}_級{1}_學期1_科目{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = subjName1 };
                                     mailmerge[string.Format("{0}_級{1}_學期2_科目{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = subjName1 };
                                 }
+                                if (subjName1 != "" && subjName2 == "")
+                                {
+                                    mailmerge[string.Format("{0}_級{1}_學期1_科目{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = subjName1 };
+                                    mailmerge[string.Format("{0}_級{1}_學期2_科目{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = subjName1 };
+                                }
+                                if (subjName1 == "" && subjName2 != "")
+                                {
+                                    mailmerge[string.Format("{0}_級{1}_學期1_科目{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = subjName2 };
+                                    mailmerge[string.Format("{0}_級{1}_學期2_科目{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = subjName2 };
+                                }
 
 
                                 var subjLevel1 = "" + mailmerge[string.Format("{0}_級{1}_學期{2}_科目級別{3}", domain.Trim().Replace(" ", "_"), gradeCount, 1, courseCount)];
@@ -411,16 +421,16 @@ namespace JH.IBSH.Report.Foreign
                                     mailmerge[string.Format("{0}_級{1}_學期1_科目級別{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = subjLevel1 };
                                     mailmerge[string.Format("{0}_級{1}_學期2_科目級別{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = subjLevel1 };
                                 }
-                                if (subjLevel2 == ""&& subjLevel1 !="")
+                                if (subjLevel1 != "" && subjLevel2 == "")
                                 {
                                     mailmerge[string.Format("{0}_級{1}_學期1_科目級別{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = subjLevel1 };
-                                    mailmerge[string.Format("{0}_級{1}_學期2_科目級別{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = "" };
+                                    mailmerge[string.Format("{0}_級{1}_學期2_科目級別{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = subjLevel1 };
                                 }
 
-                                if (subjLevel1 == "" && subjLevel2 !="")
+                                if (subjLevel1 == "" && subjLevel2 != "")
                                 {
                                     mailmerge[string.Format("{0}_級{1}_學期1_科目級別{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = subjLevel2 };
-                                    mailmerge[string.Format("{0}_級{1}_學期2_科目級別{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value ="" };
+                                    mailmerge[string.Format("{0}_級{1}_學期2_科目級別{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = subjLevel2 };
                                 }
                             }
                         }
