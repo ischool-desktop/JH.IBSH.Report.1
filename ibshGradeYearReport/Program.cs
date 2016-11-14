@@ -28,7 +28,7 @@ namespace ibshGradeYearReport
 
             //權限設定
             Catalog permission2 = RoleAclSource.Instance["學生"]["功能按鈕"];
-            permission2.Add(new RibbonFeature("{A5A44C03-6835-42C4-BAE6-6C932AC3B4BB}", "質性評量成績單(for Grade 5-12)"));
+            permission2.Add(new RibbonFeature("{A5A44C03-6835-42C4-BAE6-6C932AC3B4BB}", "ConductGradeReport(for Grade 5-12)"));
 
             var btnReport2 = item1["報表"]["成績相關報表"]["ConductGradeReport(for Gr.5-12;2015 年以後適用)"];
             btnReport2.Image = Properties.Resources.report_3_xxl;
