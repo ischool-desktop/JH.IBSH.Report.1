@@ -380,7 +380,7 @@ namespace ibshGradeYearReport
 
                             var studentRow = dicStudentRow["" + row["ref_student_id"]];
 
-                            string subject_name = ("" + row["subject"]).Trim().Replace(' ', '_').Replace('"', '_');
+                            string subject_name = ("" + row["subject"]).FixFieldName();
                             //科目教師姓名欄位
                             string insertStrTeacherName = subject_name + "/teacherName";
                             if (!mergeDT.Columns.Contains(insertStrTeacherName))
@@ -431,7 +431,7 @@ namespace ibshGradeYearReport
                         foreach (DataRow row in dt.Rows)
                         {
                             var studentRow = dicStudentRow["" + row["id"]];
-                            var subject = ("" + row["subject"]).Trim().Replace(' ', '_').Replace('"', '_');
+                            var subject = ("" + row["subject"]).FixFieldName();
                             string insertStrExamScoreMark = "Q" + ((semester - 1) * 2 + int.Parse("0" + row["exam_id"])) + "/" + subject + "/ExamScoreMark";
                             if (!mergeDT.Columns.Contains(insertStrExamScoreMark))
                                 mergeDT.Columns.Add(insertStrExamScoreMark);
@@ -447,7 +447,7 @@ namespace ibshGradeYearReport
                             var studentRow = dicStudentRow[semesterScoreRecord.RefStudentID];
                             foreach (var subject in semesterScoreRecord.Subjects.Keys)
                             {
-                                string insertStrSemsScore = "S" + semester + "/" + subject.Trim().Replace(' ', '_').Replace('"', '_') + "/SemsScore";
+                                string insertStrSemsScore = "S" + semester + "/" + subject.FixFieldName() + "/SemsScore";
                                 if (!mergeDT.Columns.Contains(insertStrSemsScore))
                                     mergeDT.Columns.Add(insertStrSemsScore);
                                 studentRow[mergeDT.Columns.IndexOf(insertStrSemsScore)] = "" + semesterScoreRecord.Subjects[subject].Score;
@@ -508,7 +508,7 @@ namespace ibshGradeYearReport
                         #region 變動式合併欄位
                         {//檢查科目存在
                             string insertStrGroup = "DynamicCheck/Subject"
-                                + "/" + subj.Trim().Replace(' ', '_').Replace('"', '_');
+                                + "/" + subj.FixFieldName();
                             if (!mergeDT.Columns.Contains(insertStrGroup))
                                 mergeDT.Columns.Add(insertStrGroup, typeof(string));
 
@@ -524,7 +524,7 @@ namespace ibshGradeYearReport
                             {//group文字
                                 groupIndex++;
                                 string insertStrGroup = "DynamicField"
-                                    + "/" + subj.Trim().Replace(' ', '_').Replace('"', '_')
+                                    + "/" + subj.FixFieldName()
                                     + "/Group/" + groupIndex;
                                 if (!mergeDT.Columns.Contains(insertStrGroup))
                                     mergeDT.Columns.Add(insertStrGroup, typeof(string));
@@ -543,15 +543,15 @@ namespace ibshGradeYearReport
                                     string insertStrC = "???????";
                                     if (term == "1")
                                     {
-                                        insertStrC = "Q" + (semester * 2 - 1) + "/" + subj.Trim().Replace(' ', '_').Replace('"', '_') + "/" + group.Trim().Replace(' ', '_').Replace('"', '_') + "/" + title.Trim().Replace(' ', '_').Replace('"', '_');
+                                        insertStrC = "Q" + (semester * 2 - 1) + "/" + subj.FixFieldName() + "/" + group.FixFieldName() + "/" + title.FixFieldName();
                                     }
                                     else if (term == "2")
                                     {
-                                        insertStrC = "Q" + (semester * 2) + "/" + subj.Trim().Replace(' ', '_').Replace('"', '_') + "/" + group.Trim().Replace(' ', '_').Replace('"', '_') + "/" + title.Trim().Replace(' ', '_').Replace('"', '_');
+                                        insertStrC = "Q" + (semester * 2) + "/" + subj.FixFieldName() + "/" + group.FixFieldName() + "/" + title.FixFieldName();
                                     }
                                     else
                                     {
-                                        insertStrC = "S" + semester + "/" + subj.Trim().Replace(' ', '_').Replace('"', '_') + "/" + group.Trim().Replace(' ', '_').Replace('"', '_') + "/" + title.Trim().Replace(' ', '_').Replace('"', '_');
+                                        insertStrC = "S" + semester + "/" + subj.FixFieldName() + "/" + group.FixFieldName() + "/" + title.FixFieldName();
                                     }
                                     if (!mergeDT.Columns.Contains(insertStrC))
                                         mergeDT.Columns.Add(insertStrC);
@@ -566,7 +566,7 @@ namespace ibshGradeYearReport
                                     {//title文字
                                         itemIndex++;
                                         string insertStrGroupItem = "DynamicField"
-                                           + "/" + subj.Trim().Replace(' ', '_').Replace('"', '_')
+                                           + "/" + subj.FixFieldName()
                                            + "/Group/" + groupIndex
                                            + "/Item/" + itemIndex;
                                         if (!mergeDT.Columns.Contains(insertStrGroupItem))
@@ -580,7 +580,7 @@ namespace ibshGradeYearReport
                                     {
                                         insertStrC = "Dynamic"
                                             + "/" + "Q" + (semester * 2 - 1)
-                                            + "/" + subj.Trim().Replace(' ', '_').Replace('"', '_')
+                                            + "/" + subj.FixFieldName()
                                             + "/Group/" + groupIndex
                                             + "/Item/" + itemIndex;
                                     }
@@ -588,7 +588,7 @@ namespace ibshGradeYearReport
                                     {
                                         insertStrC = "Dynamic"
                                             + "/" + "Q" + (semester * 2)
-                                            + "/" + subj.Trim().Replace(' ', '_').Replace('"', '_')
+                                            + "/" + subj.FixFieldName()
                                             + "/Group/" + groupIndex
                                             + "/Item/" + itemIndex;
                                     }
@@ -596,7 +596,7 @@ namespace ibshGradeYearReport
                                     {
                                         insertStrC = "Dynamic"
                                             + "/" + "S" + semester
-                                            + "/" + subj.Trim().Replace(' ', '_').Replace('"', '_')
+                                            + "/" + subj.FixFieldName()
                                             + "/Group/" + groupIndex
                                             + "/Item/" + itemIndex;
                                     }
@@ -804,6 +804,14 @@ namespace ibshGradeYearReport
         private void cboSY_SelectedIndexChanged(object sender, EventArgs e)
         {
             _SchoolYear = int.Parse(cboSY.Text);
+        }
+    }
+
+    static class MergeFieldFix
+    {
+        public static string FixFieldName(this string item)
+        {
+            return item.Trim().Replace(' ', '_').Replace('"', '_').Replace('“', '_').Replace('”', '_');
         }
     }
 
