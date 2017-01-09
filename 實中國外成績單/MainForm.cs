@@ -344,37 +344,38 @@ namespace JH.IBSH.Report.Foreign
                             {
                                 //群
                                 int courseCount = 1;
+                                dcl[domain].Sort((SubjectScore s1, SubjectScore s2) => { return (s1.Subject + " (" + s1.Credit + ")").CompareTo(s2.Subject + " (" + s2.Credit + ")"); });
                                 foreach (var item in dcl[domain])
                                 {
                                     if (item.Semester == semester)
                                     {
-                                        mailmerge.Add(string.Format("{0}_級{1}_學期{2}_科目{3}", domain.Trim().Replace(" ", "_"), gradeCount, semester, courseCount), item.Subject);
-                                        mailmerge.Add(string.Format("{0}_級{1}_學期{2}_科目級別{3}", domain.Trim().Replace(" ", "_"), gradeCount, semester, courseCount), "Level:" + item.Level);
-                                        mailmerge.Add(string.Format("{0}_級{1}_學期{2}_科目成績{3}", domain.Trim().Replace(" ", "_"), gradeCount, semester, courseCount), "" + item.Score);
+                                        mailmerge.Add(string.Format("{0}_級{1}_學期{2}_科目{3}", domain.FixFieldName(), gradeCount, semester, courseCount), item.Subject + " (" + item.Credit + ")");
+                                        mailmerge.Add(string.Format("{0}_級{1}_學期{2}_科目級別{3}", domain.FixFieldName(), gradeCount, semester, courseCount), "Level:" + item.Level);
+                                        mailmerge.Add(string.Format("{0}_級{1}_學期{2}_科目成績{3}", domain.FixFieldName(), gradeCount, semester, courseCount), "" + item.Score);
 
 
                                         // 2016/4/28 穎驊筆記，下面為檢察功能，fieldName為目前樣板的所有功能變數，假如樣版沒有完整的對應功能變數，會加入錯誤訊息提醒。
-                                        if (!fieldNames.Contains(string.Format("{0}_級{1}_學期{2}_科目成績{3}", domain.Trim().Replace(" ", "_"), gradeCount, semester, courseCount)))
+                                        if (!fieldNames.Contains(string.Format("{0}_級{1}_學期{2}_科目成績{3}", domain.FixFieldName(), gradeCount, semester, courseCount)))
                                         {
                                             if (!errCheck.ContainsKey(sr))
                                                 errCheck.Add(sr, new List<string>());
-                                            errCheck[sr].Add("合併欄位「" + domain + " 學期" + semester + " 科目成績" + courseCount + "」在樣板中不存在(科目名稱 " + item.Subject + ")。");
+                                            errCheck[sr].Add("合併欄位「" + string.Format("{0}_級{1}_學期{2}_科目成績{3}", domain.FixFieldName(), gradeCount, semester, courseCount) + "」在樣板中不存在(" + item.SchoolYear + "學年度第" + item.Semester + "學期 科目名稱 " + item.Subject + ")。");
                                         }
 
                                         courseCount++;
-                                        //mailmerge.Add(string.Format("{0}_級{1}_學期1_科目{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount), item.sems1_title);
-                                        //mailmerge.Add(string.Format("{0}_級{1}_學期2_科目{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount), item.sems2_title);
+                                        //mailmerge.Add(string.Format("{0}_級{1}_學期1_科目{2}", domain.FixFieldName(), gradeCount, courseCount), item.sems1_title);
+                                        //mailmerge.Add(string.Format("{0}_級{1}_學期2_科目{2}", domain.FixFieldName(), gradeCount, courseCount), item.sems2_title);
 
 
                                         ////都存在且相同才需要合併
                                         //if (item.sems1_title != null && item.sems2_title != null && item.sems1_title == item.sems2_title)
                                         //{
-                                        //    mailmerge[string.Format("{0}_級{1}_學期1_科目{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = item.sems1_title };
-                                        //    mailmerge[string.Format("{0}_級{1}_學期2_科目{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = item.sems2_title };
+                                        //    mailmerge[string.Format("{0}_級{1}_學期1_科目{2}", domain.FixFieldName(), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = item.sems1_title };
+                                        //    mailmerge[string.Format("{0}_級{1}_學期2_科目{2}", domain.FixFieldName(), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = item.sems2_title };
                                         //}
-                                        //mailmerge.Add(string.Format("{0}_級{1}_學期1_科目成績{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount),
+                                        //mailmerge.Add(string.Format("{0}_級{1}_學期1_科目成績{2}", domain.FixFieldName(), gradeCount, courseCount),
                                         //    item.sems1_title != null ? "" + item.sems1_score : "N/A");
-                                        //mailmerge.Add(string.Format("{0}_級{1}_學期2_科目成績{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount),
+                                        //mailmerge.Add(string.Format("{0}_級{1}_學期2_科目成績{2}", domain.FixFieldName(), gradeCount, courseCount),
                                         //    item.sems2_title != null ? "" + item.sems2_score : "N/A");
 
                                         //courseCount++;
@@ -383,54 +384,54 @@ namespace JH.IBSH.Report.Foreign
 
                                 for (; courseCount <= 3; courseCount++)
                                 {
-                                    mailmerge.Add(string.Format("{0}_級{1}_學期{2}_科目{3}", domain.Trim().Replace(" ", "_"), gradeCount, semester, courseCount), "");
-                                    mailmerge.Add(string.Format("{0}_級{1}_學期{2}_科目級別{3}", domain.Trim().Replace(" ", "_"), gradeCount, semester, courseCount), "");
-                                    mailmerge.Add(string.Format("{0}_級{1}_學期{2}_科目成績{3}", domain.Trim().Replace(" ", "_"), gradeCount, semester, courseCount), "N/A");
-                                    //mailmerge.Add(string.Format("{0}_級{1}_學期1_科目{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount), new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = "" });
-                                    //mailmerge.Add(string.Format("{0}_級{1}_學期2_科目{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount), new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = "" });
-                                    //mailmerge.Add(string.Format("{0}_級{1}_學期1_科目成績{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount), "N/A");
-                                    //mailmerge.Add(string.Format("{0}_級{1}_學期2_科目成績{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount), "N/A");
+                                    mailmerge.Add(string.Format("{0}_級{1}_學期{2}_科目{3}", domain.FixFieldName(), gradeCount, semester, courseCount), "");
+                                    mailmerge.Add(string.Format("{0}_級{1}_學期{2}_科目級別{3}", domain.FixFieldName(), gradeCount, semester, courseCount), "");
+                                    mailmerge.Add(string.Format("{0}_級{1}_學期{2}_科目成績{3}", domain.FixFieldName(), gradeCount, semester, courseCount), "N/A");
+                                    //mailmerge.Add(string.Format("{0}_級{1}_學期1_科目{2}", domain.FixFieldName(), gradeCount, courseCount), new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = "" });
+                                    //mailmerge.Add(string.Format("{0}_級{1}_學期2_科目{2}", domain.FixFieldName(), gradeCount, courseCount), new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = "" });
+                                    //mailmerge.Add(string.Format("{0}_級{1}_學期1_科目成績{2}", domain.FixFieldName(), gradeCount, courseCount), "N/A");
+                                    //mailmerge.Add(string.Format("{0}_級{1}_學期2_科目成績{2}", domain.FixFieldName(), gradeCount, courseCount), "N/A");
                                 }
                             }
 
                             for (var courseCount = 1; courseCount <= 3; courseCount++)
                             {
-                                var subjName1 = "" + mailmerge[string.Format("{0}_級{1}_學期{2}_科目{3}", domain.Trim().Replace(" ", "_"), gradeCount, 1, courseCount)];
-                                var subjName2 = "" + mailmerge[string.Format("{0}_級{1}_學期{2}_科目{3}", domain.Trim().Replace(" ", "_"), gradeCount, 2, courseCount)];
+                                var subjName1 = "" + mailmerge[string.Format("{0}_級{1}_學期{2}_科目{3}", domain.FixFieldName(), gradeCount, 1, courseCount)];
+                                var subjName2 = "" + mailmerge[string.Format("{0}_級{1}_學期{2}_科目{3}", domain.FixFieldName(), gradeCount, 2, courseCount)];
                                 if (subjName1 == subjName2 || subjName1 == "" || subjName2 == "")
                                 {
-                                    mailmerge[string.Format("{0}_級{1}_學期1_科目{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = subjName1 };
-                                    mailmerge[string.Format("{0}_級{1}_學期2_科目{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = subjName1 };
+                                    mailmerge[string.Format("{0}_級{1}_學期1_科目{2}", domain.FixFieldName(), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = subjName1 };
+                                    mailmerge[string.Format("{0}_級{1}_學期2_科目{2}", domain.FixFieldName(), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = subjName1 };
                                 }
                                 if (subjName1 != "" && subjName2 == "")
                                 {
-                                    mailmerge[string.Format("{0}_級{1}_學期1_科目{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = subjName1 };
-                                    mailmerge[string.Format("{0}_級{1}_學期2_科目{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = subjName1 };
+                                    mailmerge[string.Format("{0}_級{1}_學期1_科目{2}", domain.FixFieldName(), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = subjName1 };
+                                    mailmerge[string.Format("{0}_級{1}_學期2_科目{2}", domain.FixFieldName(), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = subjName1 };
                                 }
                                 if (subjName1 == "" && subjName2 != "")
                                 {
-                                    mailmerge[string.Format("{0}_級{1}_學期1_科目{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = subjName2 };
-                                    mailmerge[string.Format("{0}_級{1}_學期2_科目{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = subjName2 };
+                                    mailmerge[string.Format("{0}_級{1}_學期1_科目{2}", domain.FixFieldName(), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = subjName2 };
+                                    mailmerge[string.Format("{0}_級{1}_學期2_科目{2}", domain.FixFieldName(), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = subjName2 };
                                 }
 
 
-                                var subjLevel1 = "" + mailmerge[string.Format("{0}_級{1}_學期{2}_科目級別{3}", domain.Trim().Replace(" ", "_"), gradeCount, 1, courseCount)];
-                                var subjLevel2 = "" + mailmerge[string.Format("{0}_級{1}_學期{2}_科目級別{3}", domain.Trim().Replace(" ", "_"), gradeCount, 2, courseCount)];
+                                var subjLevel1 = "" + mailmerge[string.Format("{0}_級{1}_學期{2}_科目級別{3}", domain.FixFieldName(), gradeCount, 1, courseCount)];
+                                var subjLevel2 = "" + mailmerge[string.Format("{0}_級{1}_學期{2}_科目級別{3}", domain.FixFieldName(), gradeCount, 2, courseCount)];
                                 if (subjLevel1 == subjLevel2)
                                 {
-                                    mailmerge[string.Format("{0}_級{1}_學期1_科目級別{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = subjLevel1 };
-                                    mailmerge[string.Format("{0}_級{1}_學期2_科目級別{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = subjLevel1 };
+                                    mailmerge[string.Format("{0}_級{1}_學期1_科目級別{2}", domain.FixFieldName(), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = subjLevel1 };
+                                    mailmerge[string.Format("{0}_級{1}_學期2_科目級別{2}", domain.FixFieldName(), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = subjLevel1 };
                                 }
                                 if (subjLevel1 != "" && subjLevel2 == "")
                                 {
-                                    mailmerge[string.Format("{0}_級{1}_學期1_科目級別{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = subjLevel1 };
-                                    mailmerge[string.Format("{0}_級{1}_學期2_科目級別{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = subjLevel1 };
+                                    mailmerge[string.Format("{0}_級{1}_學期1_科目級別{2}", domain.FixFieldName(), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = subjLevel1 };
+                                    mailmerge[string.Format("{0}_級{1}_學期2_科目級別{2}", domain.FixFieldName(), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = subjLevel1 };
                                 }
 
                                 if (subjLevel1 == "" && subjLevel2 != "")
                                 {
-                                    mailmerge[string.Format("{0}_級{1}_學期1_科目級別{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = subjLevel2 };
-                                    mailmerge[string.Format("{0}_級{1}_學期2_科目級別{2}", domain.Trim().Replace(" ", "_"), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = subjLevel2 };
+                                    mailmerge[string.Format("{0}_級{1}_學期1_科目級別{2}", domain.FixFieldName(), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.First, value = subjLevel2 };
+                                    mailmerge[string.Format("{0}_級{1}_學期2_科目級別{2}", domain.FixFieldName(), gradeCount, courseCount)] = new mailmergeSpecial() { cellmerge = Aspose.Words.Tables.CellMerge.Previous, value = subjLevel2 };
                                 }
                             }
                         }
@@ -564,8 +565,8 @@ namespace JH.IBSH.Report.Foreign
                     {
                         builder.CellFormat.HorizontalMerge = (args.FieldValue as mailmergeSpecial).cellmerge;
                     }
-                    builder.CellFormat.FitText = true;
-                    builder.CellFormat.WrapText = true;
+                    //builder.CellFormat.FitText = true;
+                    //builder.CellFormat.WrapText = true;
                     if (args.FieldValue is mailmergeSpecial)
                     {
                         args.Text = (args.FieldValue as mailmergeSpecial).value;
@@ -579,4 +580,11 @@ namespace JH.IBSH.Report.Foreign
 
     }
 
+    static class MergeFieldFix
+    {
+        public static string FixFieldName(this string item)
+        {
+            return item.Trim().Replace(' ', '_').Replace('"', '_').Replace('“', '_').Replace('”', '_');
+        }
+    }
 }
